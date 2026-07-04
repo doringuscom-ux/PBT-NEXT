@@ -8,13 +8,23 @@ export const API_BASE_URL = isLocal
 
 console.log('API BASE URL INITIALIZED AS:', `${API_BASE_URL}/api`); const api = axios.create({
     baseURL: `${API_BASE_URL}/api`,
-    withCredentials: true
+    withCredentials: true,
+    headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+    }
 });
 
 export const widgetApi = axios.create({
     baseURL: isLocal
         ? (process.env.NEXT_PUBLIC_WIDGET_API_URL_LOCAL || 'https://weather-market.vercel.app/api')
-        : (process.env.NEXT_PUBLIC_WIDGET_API_URL_PROD || 'https://weather-market.vercel.app/api')
+        : (process.env.NEXT_PUBLIC_WIDGET_API_URL_PROD || 'https://weather-market.vercel.app/api'),
+    headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+    }
 });
 
 export const getMe = () => api.get('/auth/me');
