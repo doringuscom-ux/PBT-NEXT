@@ -8,8 +8,7 @@ export const API_BASE_URL = isLocal
 
 console.log('API BASE URL INITIALIZED AS:', `${API_BASE_URL}/api`); const api = axios.create({
     baseURL: `${API_BASE_URL}/api`,
-    withCredentials: true,
-    timeout: 10000 // 10 second timeout to prevent infinite hanging
+    withCredentials: true
 });
 
 export const widgetApi = axios.create({
