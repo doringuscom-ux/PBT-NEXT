@@ -38,26 +38,34 @@ export const DataProvider = ({ children }) => {
 
     try {
       // Check session first (treated as 1st request)
-      try {
-        const meRes = await api.getMe();
-        if (meRes.data.success) setUser(meRes.data.user);
-      } catch (e) {
-        setUser(null);
-      } finally {
-        increment();
-      }
+      const mePromise = api.getMe()
+        .then(meRes => {
+          if (meRes?.data?.success) setUser(meRes.data.user);
+        })
+        .catch(e => {
+          setUser(null);
+        })
+        .finally(increment);
 
-      // Parallel requests (5 more)
-      const results=await Promise.all([api.getMovies().catch(e=>({data:[]})).finally(increment),api.getNews().catch(e=>({data:[]})).finally(increment),api.getTodayNews().catch(e=>({data:[]})).finally(increment),api.getCelebrities().catch(e=>({data:[]})).finally(increment),api.getVideos().catch(e=>({data:[]})).finally(increment),api.getAnnouncements().catch(e=>({data:[]})).finally(increment)]);
+      // Parallel requests (6 more)
+      const results = await Promise.all([
+        mePromise,
+        api.getMovies().catch(e=>({data:[]})).finally(increment),
+        api.getNews().catch(e=>({data:[]})).finally(increment),
+        api.getTodayNews().catch(e=>({data:[]})).finally(increment),
+        api.getCelebrities().catch(e=>({data:[]})).finally(increment),
+        api.getVideos().catch(e=>({data:[]})).finally(increment),
+        api.getAnnouncements().catch(e=>({data:[]})).finally(increment)
+      ]);
 
-      const [moviesRes, newsRes, todayNewsRes, celebsRes, videosRes, annRes] = results;
+      const [_, moviesRes, newsRes, todayNewsRes, celebsRes, videosRes, annRes] = results;
 
-      setMovies(moviesRes.data.sort((a, b) => new Date(b.createdAt || b.year) - new Date(a.createdAt || a.year)));
-      setNews(newsRes.data.sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
-      setTodayNews(todayNewsRes.data.sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
-      setCelebs(celebsRes.data); console.log('FETCHED CELEBS:', celebsRes.data.length);
-      setVideos(videosRes.data);
-      setAnnouncements(annRes.data || []);
+      setMovies((moviesRes?.data || []).sort((a, b) => new Date(b.createdAt || b.year) - new Date(a.createdAt || a.year)));
+      setNews((newsRes?.data || []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
+      setTodayNews((todayNewsRes?.data || []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
+      setCelebs(celebsRes?.data || []); console.log('FETCHED CELEBS:', (celebsRes?.data || []).length);
+      setVideos(videosRes?.data || []);
+      setAnnouncements(annRes?.data || []);
     } catch (err) {
       console.error("Error fetching data:", err);
     } finally {
