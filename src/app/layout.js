@@ -4,6 +4,10 @@ import Providers from "../components/Providers";
 export const metadata = {
   title: "PB TADKA - Film News",
   description: "Latest film news, movie reviews, celebrity updates, and more at Pbtadka.",
+  robots: {
+    index: false,
+    follow: false,
+  },
   verification: {
     google: "pZU5V9lFho27fnQXxHchm3MdmtIiSr3BOdGU8s13r4U",
   },
