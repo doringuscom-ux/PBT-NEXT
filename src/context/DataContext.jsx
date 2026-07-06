@@ -40,10 +40,11 @@ export const DataProvider = ({ children }) => {
     };
 
     const withTimeout = (promise, ms, name) => {
-      return Promise.race([
-        promise,
-        new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout: ${name}`)), ms))
-      ]);
+      let timer;
+      const timeoutPromise = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`Timeout: ${name}`)), ms);
+      });
+      return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
     };
 
     try {
@@ -53,7 +54,9 @@ export const DataProvider = ({ children }) => {
         const meRes = await withTimeout(api.getMe(), 10000, 'auth/me');
         if (meRes?.data?.success) setUser(meRes.data.user);
       } catch (e) {
-        console.error("Auth me error:", e);
+        if (e.response?.status !== 401) {
+          console.log("Auth me error:", e.message);
+        }
         setUser(null);
       } finally {
         increment('auth/me');
@@ -62,12 +65,12 @@ export const DataProvider = ({ children }) => {
       console.log("Starting parallel requests");
       // Parallel requests (5 more)
       const results=await Promise.all([
-          withTimeout(api.getMovies(), 15000, 'movies').then(r => { console.log('movies fetched'); return r; }).catch(e=>{ console.error('movies error', e); return {data:[]}}).finally(() => increment('movies')),
-          withTimeout(api.getNews(), 15000, 'news').then(r => { console.log('news fetched'); return r; }).catch(e=>{ console.error('news error', e); return {data:[]}}).finally(() => increment('news')),
-          withTimeout(api.getTodayNews(), 15000, 'todayNews').then(r => { console.log('todayNews fetched'); return r; }).catch(e=>{ console.error('todayNews error', e); return {data:[]}}).finally(() => increment('todayNews')),
-          withTimeout(api.getCelebrities(), 15000, 'celebs').then(r => { console.log('celebs fetched'); return r; }).catch(e=>{ console.error('celebs error', e); return {data:[]}}).finally(() => increment('celebs')),
-          withTimeout(api.getVideos(), 15000, 'videos').then(r => { console.log('videos fetched'); return r; }).catch(e=>{ console.error('videos error', e); return {data:[]}}).finally(() => increment('videos')),
-          withTimeout(api.getAnnouncements(), 15000, 'announcements').then(r => { console.log('announcements fetched'); return r; }).catch(e=>{ console.error('announcements error', e); return {data:[]}}).finally(() => increment('announcements'))
+          withTimeout(api.getMovies(), 15000, 'movies').then(r => { console.log('movies fetched'); return r; }).catch(e=>{ if(e.response?.status !== 401) console.log('movies error', e.message); return {data:[]}}).finally(() => increment('movies')),
+          withTimeout(api.getNews(), 15000, 'news').then(r => { console.log('news fetched'); return r; }).catch(e=>{ if(e.response?.status !== 401) console.log('news error', e.message); return {data:[]}}).finally(() => increment('news')),
+          withTimeout(api.getTodayNews(), 15000, 'todayNews').then(r => { console.log('todayNews fetched'); return r; }).catch(e=>{ if(e.response?.status !== 401) console.log('todayNews error', e.message); return {data:[]}}).finally(() => increment('todayNews')),
+          withTimeout(api.getCelebrities(), 15000, 'celebs').then(r => { console.log('celebs fetched'); return r; }).catch(e=>{ if(e.response?.status !== 401) console.log('celebs error', e.message); return {data:[]}}).finally(() => increment('celebs')),
+          withTimeout(api.getVideos(), 15000, 'videos').then(r => { console.log('videos fetched'); return r; }).catch(e=>{ if(e.response?.status !== 401) console.log('videos error', e.message); return {data:[]}}).finally(() => increment('videos')),
+          withTimeout(api.getAnnouncements(), 15000, 'announcements').then(r => { console.log('announcements fetched'); return r; }).catch(e=>{ if(e.response?.status !== 401) console.log('announcements error', e.message); return {data:[]}}).finally(() => increment('announcements'))
       ]);
 
       console.log("All parallel requests completed", results);
