@@ -14,24 +14,21 @@ const VideoDetail = () => {
     const rawId = params?.id || params?.param || params?.['*']; const id = Array.isArray(rawId) ? rawId.join('/') : rawId;
     const { videos, news, addVideoComment, likeVideoComment, updateVideoComment, deleteVideoComment } = useData();
     const [video, setVideo] = useState(null);
+    const [sidebarNews, setSidebarNews] = useState([]);
+    const [recommendedVideos, setRecommendedVideos] = useState([]);
     const baseUrl = API_BASE_URL;
 
     useEffect(() => {
         const found = videos.find(v => v._id === id || v.slug === id);
-        if (found) setVideo(found);
+        if (found) {
+            setVideo(found);
+            const matched = videos.filter(v => v.videoType === found.videoType && v._id !== id);
+            const others = videos.filter(v => v.videoType !== found.videoType && v._id !== id);
+            setRecommendedVideos([...matched, ...others.sort(() => 0.5 - Math.random())].slice(0, 4));
+        }
+        setSidebarNews([...news].sort(() => 0.5 - Math.random()).slice(0, 6));
         window.scrollTo(0, 0);
-    }, [id, videos]);
-
-    const getRecommendedVideos = () => {
-        if (!video) return [];
-        // Same type (youtube/upload) first
-        const matched = videos.filter(v => v.videoType === video.videoType && v._id !== id);
-        const others = videos.filter(v => v.videoType !== video.videoType && v._id !== id);
-        return [...matched, ...others.sort(() => 0.5 - Math.random())].slice(0, 4);
-    };
-
-    const sidebarNews = [...news].sort(() => 0.5 - Math.random()).slice(0, 6);
-    const recommendedVideos = getRecommendedVideos();
+    }, [id, videos, news]);
 
     if (!video) return <div className="min-h-screen bg-white flex items-center justify-center font-bold">Loading Video...</div>;
 
