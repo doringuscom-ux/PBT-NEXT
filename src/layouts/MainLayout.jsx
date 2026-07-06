@@ -42,7 +42,7 @@ const MainLayout = ({ children }) => {
           <ins className="adsbygoogle w-full"
                style={{ display: 'block' }}
                data-ad-client="ca-pub-6214614018313479"
-               data-ad-slot="9896265377"
+               data-ad-slot="3465212641"
                data-ad-format="auto"
                data-full-width-responsive="true"></ins>
         </div>

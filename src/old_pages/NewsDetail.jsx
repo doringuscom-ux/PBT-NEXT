@@ -102,10 +102,10 @@ const NewsDetail = () => {
                         <div className="w-full text-center my-8 overflow-hidden flex justify-center">
                             <ins className="adsbygoogle w-full"
                                  style={{ display: 'block', textAlign: 'center' }}
-                                 data-ad-layout="in-article"
-                                 data-ad-format="fluid"
                                  data-ad-client="ca-pub-6214614018313479"
-                                 data-ad-slot="1175600423"></ins>
+                                 data-ad-slot="3465212641"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
                         </div>
 
                         {/* Comment Section */}
@@ -123,9 +123,10 @@ const NewsDetail = () => {
                         <div className="w-full text-center mt-12 mb-8 overflow-hidden">
                             <ins className="adsbygoogle w-full"
                                  style={{ display: 'block' }}
-                                 data-ad-format="autorelaxed"
                                  data-ad-client="ca-pub-6214614018313479"
-                                 data-ad-slot="5601509136"></ins>
+                                 data-ad-slot="3465212641"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
                         </div>
                     </div>
 
