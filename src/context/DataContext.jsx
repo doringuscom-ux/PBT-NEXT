@@ -26,41 +26,63 @@ export const DataProvider = ({ children }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
 
   const fetchData = async () => {
+    console.log("STARTING FETCH DATA");
     setIsLoading(true);
     setLoadingProgress(0);
     const totalRequests = 7;
     let completed = 0;
 
-    const increment = () => {
+    const increment = (step) => {
       completed++;
-      setLoadingProgress(Math.round((completed / totalRequests) * 100));
+      const p = Math.round((completed / totalRequests) * 100);
+      console.log(`[Progress] Step: ${step}, completed: ${completed}/${totalRequests}, Progress: ${p}%`);
+      setLoadingProgress(p);
+    };
+
+    const withTimeout = (promise, ms, name) => {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout: ${name}`)), ms))
+      ]);
     };
 
     try {
+      console.log("Fetching /auth/me");
       // Check session first (treated as 1st request)
       try {
-        const meRes = await api.getMe();
-        if (meRes.data.success) setUser(meRes.data.user);
+        const meRes = await withTimeout(api.getMe(), 10000, 'auth/me');
+        if (meRes?.data?.success) setUser(meRes.data.user);
       } catch (e) {
+        console.error("Auth me error:", e);
         setUser(null);
       } finally {
-        increment();
+        increment('auth/me');
       }
 
+      console.log("Starting parallel requests");
       // Parallel requests (5 more)
-      const results=await Promise.all([api.getMovies().catch(e=>({data:[]})).finally(increment),api.getNews().catch(e=>({data:[]})).finally(increment),api.getTodayNews().catch(e=>({data:[]})).finally(increment),api.getCelebrities().catch(e=>({data:[]})).finally(increment),api.getVideos().catch(e=>({data:[]})).finally(increment),api.getAnnouncements().catch(e=>({data:[]})).finally(increment)]);
+      const results=await Promise.all([
+          withTimeout(api.getMovies(), 15000, 'movies').then(r => { console.log('movies fetched'); return r; }).catch(e=>{ console.error('movies error', e); return {data:[]}}).finally(() => increment('movies')),
+          withTimeout(api.getNews(), 15000, 'news').then(r => { console.log('news fetched'); return r; }).catch(e=>{ console.error('news error', e); return {data:[]}}).finally(() => increment('news')),
+          withTimeout(api.getTodayNews(), 15000, 'todayNews').then(r => { console.log('todayNews fetched'); return r; }).catch(e=>{ console.error('todayNews error', e); return {data:[]}}).finally(() => increment('todayNews')),
+          withTimeout(api.getCelebrities(), 15000, 'celebs').then(r => { console.log('celebs fetched'); return r; }).catch(e=>{ console.error('celebs error', e); return {data:[]}}).finally(() => increment('celebs')),
+          withTimeout(api.getVideos(), 15000, 'videos').then(r => { console.log('videos fetched'); return r; }).catch(e=>{ console.error('videos error', e); return {data:[]}}).finally(() => increment('videos')),
+          withTimeout(api.getAnnouncements(), 15000, 'announcements').then(r => { console.log('announcements fetched'); return r; }).catch(e=>{ console.error('announcements error', e); return {data:[]}}).finally(() => increment('announcements'))
+      ]);
 
+      console.log("All parallel requests completed", results);
       const [moviesRes, newsRes, todayNewsRes, celebsRes, videosRes, annRes] = results;
 
-      setMovies(moviesRes.data.sort((a, b) => new Date(b.createdAt || b.year) - new Date(a.createdAt || a.year)));
-      setNews(newsRes.data.sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
-      setTodayNews(todayNewsRes.data.sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
-      setCelebs(celebsRes.data); console.log('FETCHED CELEBS:', celebsRes.data.length);
-      setVideos(videosRes.data);
-      setAnnouncements(annRes.data || []);
+      setMovies(((moviesRes && moviesRes.data) ? (Array.isArray(moviesRes.data) ? moviesRes.data : moviesRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.year) - new Date(a.createdAt || a.year)));
+      setNews(((newsRes && newsRes.data) ? (Array.isArray(newsRes.data) ? newsRes.data : newsRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
+      setTodayNews(((todayNewsRes && todayNewsRes.data) ? (Array.isArray(todayNewsRes.data) ? todayNewsRes.data : todayNewsRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
+      setCelebs((celebsRes && celebsRes.data) ? (Array.isArray(celebsRes.data) ? celebsRes.data : celebsRes.data.data || []) : []); 
+      setVideos((videosRes && videosRes.data) ? (Array.isArray(videosRes.data) ? videosRes.data : videosRes.data.data || []) : []);
+      setAnnouncements((annRes && annRes.data) ? (Array.isArray(annRes.data) ? annRes.data : annRes.data.data || []) : []);
     } catch (err) {
       console.error("Error fetching data:", err);
     } finally {
+      console.log("Setting isLoading to false");
       setIsLoading(false);
     }
   };
