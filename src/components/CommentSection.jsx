@@ -81,12 +81,12 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
     <div className="mt-8 pt-8 border-t border-gray-100">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-black text-white md:text-slate-900 uppercase tracking-tighter">
-          Discussions <span className="text-yellow-400 ml-2 bg-yellow-400/5 px-2 py-0.5 rounded text-sm">{comments.length}</span>
+          Discussions <span className="text-yellow-400 md:text-primary-red ml-2 bg-yellow-400/5 md:bg-primary-red/5 px-2 py-0.5 rounded text-sm">{comments.length}</span>
         </h3>
         {!user && (
           <button 
             onClick={() => setShowAuthModal(true)}
-            className="text-[9px] font-black uppercase tracking-widest text-yellow-400 hover:underline"
+            className="text-[9px] font-black uppercase tracking-widest text-yellow-400 md:text-primary-red hover:underline"
           >
             Sign in to join
           </button>
@@ -95,15 +95,15 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
 
       {/* Comment Form */}
       <form onSubmit={handleSubmit} className="mb-6 group">
-        <div className="relative bg-slate-50 rounded-xl p-0.5 transition-all focus-within:ring-2 focus-within:ring-yellow-400/5 focus-within:bg-white border border-slate-100 group-focus-within:border-yellow-400/20 shadow-sm">
+        <div className="relative bg-white/5 rounded-xl p-0.5 transition-all focus-within:ring-2 focus-within:ring-yellow-400/5 focus-within:bg-white/10 border border-white/10 group-focus-within:border-yellow-400/20 shadow-sm">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Share your thoughts..."
-            className="w-full h-20 p-4 bg-transparent outline-none text-slate-700 font-semibold resize-none text-sm placeholder:text-slate-300 placeholder:italic"
+            className="w-full h-20 p-4 bg-transparent outline-none text-white font-semibold resize-none text-sm placeholder:text-gray-500 placeholder:italic"
             disabled={isSubmitting}
           />
-          <div className="flex justify-between items-center p-2 border-t border-slate-100 bg-white/50 rounded-b-lg">
+          <div className="flex justify-between items-center p-2 border-t border-white/10 bg-black/20 rounded-b-lg">
              <div className="flex items-center gap-2 px-2">
                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Live discussion</span>
@@ -111,7 +111,7 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
              <button
               type="submit"
               disabled={!newComment.trim() || isSubmitting}
-              className="bg-slate-900 text-white px-6 py-2 rounded-lg font-black uppercase tracking-widest text-[9px] hover:bg-yellow-400 hover:shadow-lg transition-all"
+              className="bg-white/10 border border-white/20 text-white px-6 py-2 rounded-lg font-black uppercase tracking-widest text-[9px] hover:bg-yellow-400 hover:text-black hover:shadow-lg transition-all"
             >
               {isSubmitting ? 'Posting...' : 'Post'}
             </button>

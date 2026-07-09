@@ -559,7 +559,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                         <button 
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`px-6 py-4 text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap border-b-4 ${activeTab === tab ? 'border-yellow-400 text-yellow-400 bg-yellow-400/5' : 'border-transparent text-gray-400 md:text-gray-500 hover:text-white md:hover:text-slate-900'}`}
+                            className={`px-6 py-4 text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap border-b-4 ${activeTab === tab ? 'border-yellow-400 text-yellow-400 bg-yellow-400/5 md:border-primary-red md:text-primary-red md:bg-primary-red/5' : 'border-transparent text-gray-400 md:text-gray-500 hover:text-white md:hover:text-slate-900'}`}
                         >
                             {tab}
                         </button>
@@ -575,9 +575,9 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-12">
                                 <section>
                                     <div className="flex items-center gap-4 mb-8">
-                                        <div className="h-10 w-1.5 bg-yellow-400 rounded-full"></div>
+                                        <div className="h-10 w-1.5 bg-yellow-400 md:bg-primary-red rounded-full"></div>
                                         <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white md:text-slate-900 leading-none">
-                                            The Story <span className="text-yellow-400">Behind</span> {movie.title}
+                                            The Story <span className="text-yellow-400 md:text-primary-red">Behind</span> {movie.title}
                                         </h2>
                                     </div>
 
@@ -587,8 +587,8 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                         </div>
 
                                         <div className="relative z-10">
-                                            <h3 className="text-[10px] font-black text-yellow-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
-                                                <span className="w-8 h-[2px] bg-yellow-400/20"></span> Synopsis
+                                            <h3 className="text-[10px] font-black text-yellow-400 md:text-primary-red uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+                                                <span className="w-8 h-[2px] bg-yellow-400/20 md:bg-primary-red/20"></span> Synopsis
                                             </h3>
                                             
                                             <div className="text-lg md:text-xl font-medium text-gray-300 md:text-slate-700 leading-relaxed font-serif italic mb-4 border-l-4 border-yellow-400/30 md:border-slate-100 pl-8 py-2 whitespace-pre-wrap">
@@ -671,7 +671,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                     <section id="main-cast">
                                         <div className="flex justify-between items-center mb-6">
                                             <h3 className="text-xl font-black uppercase italic text-white md:text-slate-900">Main Cast</h3>
-                                            <button onClick={() => setActiveTab('Cast & Crew')} className="text-yellow-400 font-black uppercase text-[10px] tracking-widest group">Full Cast <i className="fas fa-chevron-right ml-1 transition-transform group-hover:translate-x-1"></i></button>
+                                            <button onClick={() => setActiveTab('Cast & Crew')} className="text-yellow-400 md:text-primary-red font-black uppercase text-[10px] tracking-widest group">Full Cast <i className="fas fa-chevron-right ml-1 transition-transform group-hover:translate-x-1"></i></button>
                                         </div>
                                         <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4 pt-2 -mt-2">
                                             {movie.cast.slice(0, 8).map((actor, idx) => (
@@ -693,7 +693,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                 <section id="photos">
                                     <div className="flex justify-between items-center mb-6">
                                         <h3 className="text-xl font-black uppercase italic text-white md:text-slate-900">Photos <span className="text-gray-500 md:text-gray-300 ml-1">({galleryImages.length})</span></h3>
-                                        <button onClick={() => setActiveTab('Photos')} className="text-yellow-400 font-black uppercase text-[10px] tracking-widest group">View All <i className="fas fa-chevron-right ml-1 transition-transform group-hover:translate-x-1"></i></button>
+                                        <button onClick={() => setActiveTab('Photos')} className="text-yellow-400 md:text-primary-red font-black uppercase text-[10px] tracking-widest group">View All <i className="fas fa-chevron-right ml-1 transition-transform group-hover:translate-x-1"></i></button>
                                     </div>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                         {(movie.photos?.length > 0 ? movie.photos : [movie.image, movie.coverImage || movie.image]).slice(0, 4).map((p, i) => (
@@ -808,14 +808,14 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                     </div>
 
                                     {/* Screens & Release Data */}
-                                    <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm flex flex-col justify-center gap-6">
+                                    <div className="bg-white/5 rounded-[2rem] p-8 border border-white/10 shadow-sm flex flex-col justify-center gap-6">
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 rounded-2xl bg-yellow-400/5 flex items-center justify-center text-yellow-400">
                                                 <i className="fas fa-desktop text-xl"></i>
                                             </div>
                                             <div>
                                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Screens Count</p>
-                                                <h4 className="text-xl font-black italic uppercase text-slate-900">{movie.performance?.screens || 'N/A'} <span className="text-[10px] text-slate-400 lowercase italic ml-1">Worldwide</span></h4>
+                                                <h4 className="text-xl font-black italic uppercase text-white">{movie.performance?.screens || 'N/A'} <span className="text-[10px] text-slate-400 lowercase italic ml-1">Worldwide</span></h4>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">
@@ -824,7 +824,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                             </div>
                                             <div>
                                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Release Date</p>
-                                                <h4 className="text-xl font-black italic uppercase text-slate-900">
+                                                <h4 className="text-xl font-black italic uppercase text-white">
                                                     {
                                                         (movie.isReleaseDateConfirmed && movie.releaseDate) ? (
                                                             new Date(movie.releaseDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
@@ -839,15 +839,15 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                 </div>
 
                                 {/* Collection Breakdown Table */}
-                                <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] overflow-hidden">
-                                    <div className="bg-slate-50 px-8 py-5 border-b border-gray-100">
-                                        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                                <div className="bg-white/5 rounded-[2.5rem] border border-white/10 shadow-lg overflow-hidden">
+                                    <div className="bg-black/20 px-8 py-5 border-b border-white/5">
+                                        <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
                                             <i className="fas fa-table text-yellow-400"></i> Collection Breakdown
                                         </h3>
                                     </div>
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-left">
-                                            <tbody className="divide-y divide-gray-50">
+                                            <tbody className="divide-y divide-white/5">
                                                 {[
                                                     { label: 'Opening Day (Day 1)', value: movie.performance?.day1, highlight: true },
                                                     { label: 'Opening Weekend', value: movie.performance?.weekend },
@@ -856,9 +856,9 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                                     { label: 'India Gross Collection', value: movie.performance?.indiaGross },
                                                     { label: 'Overseas Collection', value: movie.performance?.overseas },
                                                 ].map((row, idx) => (
-                                                    <tr key={idx} className={`${row.highlight ? 'bg-yellow-50/30' : 'hover:bg-slate-50'} transition-colors`}>
-                                                        <td className="px-8 py-5 text-sm font-black text-slate-600 uppercase tracking-tight">{row.label}</td>
-                                                        <td className="px-8 py-5 text-right font-black text-slate-900 italic">
+                                                    <tr key={idx} className={`${row.highlight ? 'bg-yellow-400/5' : 'hover:bg-white/5'} transition-colors`}>
+                                                        <td className="px-8 py-5 text-sm font-black text-gray-300 uppercase tracking-tight">{row.label}</td>
+                                                        <td className="px-8 py-5 text-right font-black text-white italic">
                                                             {row.value ? `₹${row.value} Cr` : '-'}
                                                         </td>
                                                     </tr>
@@ -896,7 +896,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                     </button>
                                 </div>
 
-                                <div id="review-form-section" className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 shadow-inner mb-12 animate-in fade-in slide-in-from-top-4 duration-500">
+                                <div id="review-form-section" className="bg-white/5 p-8 rounded-[2.5rem] border border-white/10 shadow-inner mb-12 animate-in fade-in slide-in-from-top-4 duration-500">
                                     <div className="flex flex-col md:flex-row gap-8 items-start">
                                         <div className="shrink-0 space-y-2">
                                             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Your Rating</p>
@@ -907,7 +907,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                                         onClick={() => setTempRating(star)}
                                                         className="hover:scale-125 transition-transform"
                                                     >
-                                                        <i className={`fas fa-star ${star <= tempRating ? 'text-yellow-500' : 'text-slate-200'}`}></i>
+                                                        <i className={`fas fa-star ${star <= tempRating ? 'text-yellow-500' : 'text-white/10'}`}></i>
                                                     </button>
                                                 ))}
                                             </div>
@@ -915,7 +915,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                         <div className="flex-1 w-full space-y-4">
                                             <textarea 
                                                 placeholder="What did you think of this movie?"
-                                                className="w-full p-5 border rounded-2xl text-sm outline-none focus:ring-4 focus:ring-yellow-400/20 resize-none h-32 font-medium"
+                                                className="w-full p-5 bg-black/20 border border-white/10 rounded-2xl text-sm outline-none focus:ring-4 focus:ring-yellow-400/20 resize-none h-32 font-medium text-white placeholder-gray-500"
                                                 value={reviewText}
                                                 onChange={(e) => setReviewText(e.target.value)}
                                             />
@@ -949,8 +949,8 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                             .filter(r => r.review)
                                             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                                             .map((r, idx) => (
-                                            <div key={idx} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
-                                                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
+                                            <div key={idx} className="bg-white/5 p-8 rounded-[2.5rem] border border-white/10 shadow-sm hover:shadow-xl hover:bg-white/10 transition-all duration-300 relative overflow-hidden group">
+                                                <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-transform">
                                                     <i className="fas fa-quote-right text-6xl"></i>
                                                 </div>
                                                 <div className="relative z-10 space-y-6">
@@ -960,10 +960,10 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                                                 {r.user?.username?.charAt(0).toUpperCase() || 'A'}
                                                             </div>
                                                             <div>
-                                                                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">{r.user?.fullName || r.user?.username || 'Anonymous'}</p>
+                                                                <p className="text-xs font-black uppercase tracking-[0.2em] text-white">{r.user?.fullName || r.user?.username || 'Anonymous'}</p>
                                                                 <div className="flex gap-1 mt-1">
                                                                     {[1,2,3,4,5].map(star => (
-                                                                        <i key={star} className={`fas fa-star text-[8px] ${star <= r.rating ? 'text-yellow-500' : 'text-slate-200'}`}></i>
+                                                                        <i key={star} className={`fas fa-star text-[8px] ${star <= r.rating ? 'text-yellow-500' : 'text-white/10'}`}></i>
                                                                     ))}
                                                                 </div>
                                                             </div>
@@ -987,7 +987,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                                             )}
                                                         </div>
                                                     </div>
-                                                    <p className="text-base font-medium text-slate-600 leading-relaxed italic">
+                                                    <p className="text-base font-medium text-gray-300 leading-relaxed italic">
                                                         "{r.review}"
                                                     </p>
                                                 </div>
@@ -995,9 +995,9 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="bg-slate-50 rounded-[3rem] p-20 text-center border-2 border-dashed border-slate-200">
-                                        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-                                            <i className="fas fa-comment-slash text-slate-300 text-3xl"></i>
+                                    <div className="bg-white/5 rounded-[3rem] p-20 text-center border-2 border-dashed border-white/10">
+                                        <div className="w-20 h-20 bg-black/20 border border-white/5 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                                            <i className="fas fa-comment-slash text-white/20 text-3xl"></i>
                                         </div>
                                         <h3 className="text-xl font-black uppercase italic text-slate-400">No Reviews Yet</h3>
                                         <p className="text-slate-400 text-sm mt-2">Be the first to share your thoughts on this movie!</p>
@@ -1051,7 +1051,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                             <Link 
                                                 key={article._id} 
                                                 href={`/latest-news/${article.slug || article._id}`}
-                                                className="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col h-full no-underline"
+                                                className="group relative bg-white/5 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-white/10 hover:border-white/20 flex flex-col h-full no-underline"
                                             >
                                                 <div className="aspect-video overflow-hidden relative">
                                                     <img src={article.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="" />
@@ -1068,14 +1068,14 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                                             <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                                                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{article.author || 'Editor Team'}</span>
                                                         </div>
-                                                        <h3 className="text-xl font-black text-slate-900 group-hover:text-yellow-400 transition-colors leading-tight line-clamp-2">
+                                                        <h3 className="text-xl font-black text-white group-hover:text-yellow-400 transition-colors leading-tight line-clamp-2">
                                                             {article.title}
                                                         </h3>
                                                         <p className="mt-4 text-sm text-slate-500 line-clamp-3 font-medium leading-relaxed">
                                                             {article.excerpt}
                                                         </p>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-900 group-hover:gap-4 transition-all">
+                                                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white group-hover:gap-4 transition-all">
                                                         Read Full Article <i className="fas fa-arrow-right"></i>
                                                     </div>
                                                 </div>
@@ -1083,9 +1083,9 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="bg-slate-50 rounded-[3rem] p-20 text-center border-2 border-dashed border-slate-200">
-                                        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-                                            <i className="fas fa-newspaper text-slate-200 text-3xl"></i>
+                                    <div className="bg-white/5 rounded-[3rem] p-20 text-center border-2 border-dashed border-white/10">
+                                        <div className="w-20 h-20 bg-black/20 border border-white/5 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+                                            <i className="fas fa-newspaper text-white/20 text-3xl"></i>
                                         </div>
                                         <h3 className="text-xl font-black uppercase italic text-slate-400">No Articles Yet</h3>
                                         <p className="text-slate-400 text-sm mt-2">Check back later for interviews, news, and exclusive updates about {movie.title}.</p>
@@ -1099,7 +1099,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                         <div className="sticky top-[140px] h-[calc(100vh-160px)] overflow-y-auto no-scrollbar pb-6 space-y-8 pr-2">
                             <div className="bg-white/5 md:bg-white p-6 rounded-3xl shadow-sm border border-white/10 md:border-gray-100">
                                 <h3 className="text-sm font-black text-white md:text-slate-900 uppercase tracking-widest mb-6 pb-4 border-b flex items-center gap-2 italic">
-                                    <span className="w-2.5 h-2.5 bg-yellow-400 rounded-full"></span> Suggested For You
+                                    <span className="w-2.5 h-2.5 bg-yellow-400 md:bg-primary-red rounded-full"></span> Suggested For You
                                 </h3>
                                 <div className="grid grid-cols-2 gap-4">
                                     {suggestedMovies.map(m => {
