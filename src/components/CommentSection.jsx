@@ -80,13 +80,13 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
   return (
     <div className="mt-8 pt-8 border-t border-gray-100">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter">
-          Discussions <span className="text-primary-red ml-2 bg-primary-red/5 px-2 py-0.5 rounded text-sm">{comments.length}</span>
+        <h3 className="text-xl font-black text-white md:text-slate-900 uppercase tracking-tighter">
+          Discussions <span className="text-yellow-400 ml-2 bg-yellow-400/5 px-2 py-0.5 rounded text-sm">{comments.length}</span>
         </h3>
         {!user && (
           <button 
             onClick={() => setShowAuthModal(true)}
-            className="text-[9px] font-black uppercase tracking-widest text-primary-red hover:underline"
+            className="text-[9px] font-black uppercase tracking-widest text-yellow-400 hover:underline"
           >
             Sign in to join
           </button>
@@ -95,7 +95,7 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
 
       {/* Comment Form */}
       <form onSubmit={handleSubmit} className="mb-6 group">
-        <div className="relative bg-slate-50 rounded-xl p-0.5 transition-all focus-within:ring-2 focus-within:ring-primary-red/5 focus-within:bg-white border border-slate-100 group-focus-within:border-primary-red/20 shadow-sm">
+        <div className="relative bg-slate-50 rounded-xl p-0.5 transition-all focus-within:ring-2 focus-within:ring-yellow-400/5 focus-within:bg-white border border-slate-100 group-focus-within:border-yellow-400/20 shadow-sm">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
@@ -111,7 +111,7 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
              <button
               type="submit"
               disabled={!newComment.trim() || isSubmitting}
-              className="bg-slate-900 text-white px-6 py-2 rounded-lg font-black uppercase tracking-widest text-[9px] hover:bg-primary-red hover:shadow-lg transition-all"
+              className="bg-slate-900 text-white px-6 py-2 rounded-lg font-black uppercase tracking-widest text-[9px] hover:bg-yellow-400 hover:shadow-lg transition-all"
             >
               {isSubmitting ? 'Posting...' : 'Post'}
             </button>
@@ -142,7 +142,7 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
                     onClick={() => handleLike(comment._id)}
                     className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full font-black text-[9px] uppercase tracking-widest transition-all ${
                       comment.isLiked 
-                        ? 'bg-primary-red text-white shadow-md shadow-primary-red/20' 
+                        ? 'bg-yellow-400 text-white shadow-md shadow-yellow-400/20' 
                         : 'bg-slate-50 text-slate-400 hover:bg-slate-100'
                     }`}
                   >
@@ -182,9 +182,9 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
               {(user && (user.username === comment.user || user.role === 'admin' || user.role === 'sub-admin')) && editingId !== comment._id && (
                 <div className="flex items-center gap-3 mt-3 ml-10.5 border-t border-slate-50 pt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   {user.username === comment.user && (
-                    <button onClick={() => handleEditInit(comment)} className="text-[8px] font-black uppercase text-slate-400 hover:text-primary-red">Edit</button>
+                    <button onClick={() => handleEditInit(comment)} className="text-[8px] font-black uppercase text-slate-400 hover:text-yellow-400">Edit</button>
                   )}
-                  <button onClick={() => handleDelete(comment._id)} className="text-[8px] font-black uppercase text-slate-400 hover:text-primary-red">Delete</button>
+                  <button onClick={() => handleDelete(comment._id)} className="text-[8px] font-black uppercase text-slate-400 hover:text-yellow-400">Delete</button>
                 </div>
               )}
             </div>

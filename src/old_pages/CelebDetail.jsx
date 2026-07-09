@@ -63,10 +63,7 @@ const CelebDetail = () => {
 
     useEffect(() => {
         if (celeb) {
-            try {
-                (window.adsbygoogle = window.adsbygoogle || []).push({}); // For In-Article Ad
-                (window.adsbygoogle = window.adsbygoogle || []).push({}); // For Multiplex Ad
-            } catch (err) {}
+            // Ads removed
         }
     }, [celeb]);
 
@@ -547,15 +544,7 @@ const CelebDetail = () => {
                             </div>
                         )}
 
-                        {/* In-Article Ad */}
-                        <div className="w-full text-center my-8 overflow-hidden flex justify-center">
-                            <ins className="adsbygoogle w-full"
-                                 style={{ display: 'block', textAlign: 'center' }}
-                                 data-ad-client="ca-pub-6214614018313479"
-                                 data-ad-slot="3465212641"
-                                 data-ad-format="auto"
-                                 data-full-width-responsive="true"></ins>
-                        </div>
+
 
                         <div className=" border-gray-100">
                              <CommentSection 
@@ -569,15 +558,7 @@ const CelebDetail = () => {
                             />
                         </div>
 
-                        {/* Multiplex (Autorelaxed) Ad */}
-                        <div className="w-full text-center mt-12 mb-8 overflow-hidden">
-                            <ins className="adsbygoogle w-full"
-                                 style={{ display: 'block' }}
-                                 data-ad-client="ca-pub-6214614018313479"
-                                 data-ad-slot="3465212641"
-                                 data-ad-format="auto"
-                                 data-full-width-responsive="true"></ins>
-                        </div>
+
 
                     </div>
 

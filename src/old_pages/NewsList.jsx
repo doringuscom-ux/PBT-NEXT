@@ -67,11 +67,7 @@ const NewsList = () => {
                     </div>
                   </article>
                 </Link>
-                {index === 3 && (
-                  <div className="col-span-full my-4">
-                    <InlineFluidAd />
-                  </div>
-                )}
+
               </React.Fragment>
             ))}
           </div>
@@ -80,22 +76,6 @@ const NewsList = () => {
   );
 };
 
-const InlineFluidAd = () => {
-  useEffect(() => {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {}
-  }, []);
-  return (
-    <div className="w-full text-center overflow-hidden flex justify-center">
-      <ins className="adsbygoogle w-full"
-           style={{ display: 'block' }}
-           data-ad-client="ca-pub-6214614018313479"
-           data-ad-slot="3465212641"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-    </div>
-  );
-};
+
 
 export default NewsList;

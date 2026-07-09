@@ -22,10 +22,7 @@ const NewsDetail = () => {
 
     useEffect(() => {
         if (article) {
-            try {
-                (window.adsbygoogle = window.adsbygoogle || []).push({}); // For In-Article Ad
-                (window.adsbygoogle = window.adsbygoogle || []).push({}); // For Multiplex Ad
-            } catch (err) {}
+            // Ads removed
         }
     }, [article]);
 
@@ -98,15 +95,7 @@ const NewsDetail = () => {
                             />
                         </div>
 
-                        {/* In-Article Ad */}
-                        <div className="w-full text-center my-8 overflow-hidden flex justify-center">
-                            <ins className="adsbygoogle w-full"
-                                 style={{ display: 'block', textAlign: 'center' }}
-                                 data-ad-client="ca-pub-6214614018313479"
-                                 data-ad-slot="3465212641"
-                                 data-ad-format="auto"
-                                 data-full-width-responsive="true"></ins>
-                        </div>
+
 
                         {/* Comment Section */}
                         <CommentSection 
@@ -119,15 +108,7 @@ const NewsDetail = () => {
                             onDelete={deleteComment}
                         />
 
-                        {/* Multiplex (Autorelaxed) Ad */}
-                        <div className="w-full text-center mt-12 mb-8 overflow-hidden">
-                            <ins className="adsbygoogle w-full"
-                                 style={{ display: 'block' }}
-                                 data-ad-client="ca-pub-6214614018313479"
-                                 data-ad-slot="3465212641"
-                                 data-ad-format="auto"
-                                 data-full-width-responsive="true"></ins>
-                        </div>
+
                     </div>
 
                     <aside className="lg:w-[35%] xl:w-[35%] relative">

@@ -19,13 +19,9 @@ const MainLayout = ({ children }) => {
   // Check if any data is loaded from the backend
   const hasData = (movies?.length > 0) || (news?.length > 0) || (celebs?.length > 0) || (videos?.length > 0);
 
-  useEffect(() => {
-    if (hasData) {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (err) {}
-    }
-  }, [hasData]);
+    useEffect(() => {
+        // Ads removed
+    }, [hasData]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -37,16 +33,7 @@ const MainLayout = ({ children }) => {
       <main className="flex-1">
         {children}
       </main>
-      {hasData && (
-        <div className="w-full text-center my-4 overflow-hidden flex justify-center">
-          <ins className="adsbygoogle w-full"
-               style={{ display: 'block' }}
-               data-ad-client="ca-pub-6214614018313479"
-               data-ad-slot="3465212641"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-        </div>
-      )}
+
       <InquiryPopup />
       <Footer />
     </div>
