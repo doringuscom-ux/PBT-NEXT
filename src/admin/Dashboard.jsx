@@ -94,6 +94,7 @@ const Dashboard = () => {
         <QuickActionLink to="/admin/news" icon="fas fa-edit" text="Post News" color="bg-red-600" />
         <QuickActionLink to="/admin/subscribers" icon="fas fa-mail-bulk" text="Newsletter" color="bg-amber-600" />
         <QuickActionLink to="/admin/celebrities" icon="fas fa-user-plus" text="Add Celeb" color="bg-yellow-600" />
+        <QuickActionLink to="/admin/promotions" icon="fas fa-bullhorn" text="Promotions" color="bg-pink-600" />
         <QuickActionLink to="/admin/videos" icon="fas fa-video" text="Upload Video" color="bg-purple-600" />
         {user?.role === 'admin' && (
           <QuickActionLink to="/admin/users" icon="fas fa-users-cog" text="Users" color="bg-teal-600" />

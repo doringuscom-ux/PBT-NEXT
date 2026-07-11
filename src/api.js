@@ -88,6 +88,11 @@ export const getAnnouncements = () => api.get('/announcements');
 export const addAnnouncement = (data) => api.post('/announcements', data);
 export const deleteAnnouncement = (id) => api.delete(`/announcements/${id}`);
 
+export const getPromotions = () => api.get('/promotions');
+export const addPromotion = (data) => api.post('/promotions', data);
+export const updatePromotion = (id, data) => api.put(`/promotions/${id}`, data);
+export const deletePromotion = (id) => api.delete(`/promotions/${id}`);
+
 export const getWidgets = (params) => widgetApi.get('/widgets', { params });
 
 export const autoGenerateCelebSEO = () => api.post('/seo/auto-generate-celebs');

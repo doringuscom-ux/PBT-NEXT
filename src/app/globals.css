@@ -215,3 +215,18 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Custom subtle vertical scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb;
+  border-radius: 10px;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+}

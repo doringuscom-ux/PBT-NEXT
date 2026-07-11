@@ -42,7 +42,7 @@ const HomeVideoMarquee = () => {
             intervalId = setInterval(() => {
                 if (!slider) return;
                 slider.scrollLeft += scrollStep;
-                
+
                 if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 1) {
                     slider.scrollLeft = 0;
                 }
@@ -78,18 +78,18 @@ const HomeVideoMarquee = () => {
         <div className="mb-12 overflow-hidden relative">
             <div className="mb-10">
                 <div className="flex items-center justify-between items-end">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-red-600 rounded-full animate-pulse shadow-sm shadow-red-600/50"></span>
-                        <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Trailers & Clips</span>
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-red-600 rounded-full animate-pulse shadow-sm shadow-red-600/50"></span>
+                            <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Trailers & Clips</span>
+                        </div>
+                        <h2 className="text-4xl md:text-6xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">
+                            Movie <span className="text-red-600">Trailers</span>
+                        </h2>
                     </div>
-                    <h2 className="text-4xl md:text-6xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">
-                        Movie <span className="text-red-600">Trailers</span>
-                    </h2>
-                  </div>
-                  <Link href="/latest-viral-videos" className="text-slate-900 font-black no-underline text-[10px] lg:text-[11px] uppercase tracking-widest hover:text-red-600 transition-colors flex items-center gap-2 mb-2">
-                    View All <i className="fas fa-arrow-right text-[10px]"></i>
-                  </Link>
+                    <Link href="/latest-viral-videos" className="text-slate-900 font-black no-underline text-[10px] lg:text-[11px] uppercase tracking-widest hover:text-red-600 transition-colors flex items-center gap-2 mb-2">
+                        View All <i className="fas fa-arrow-right text-[10px]"></i>
+                    </Link>
                 </div>
             </div>
 
@@ -97,8 +97,8 @@ const HomeVideoMarquee = () => {
                 {/* Gradient Masks for smooth fading edges */}
                 <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#f8f9fa] to-transparent z-10 pointer-events-none hidden md:block"></div>
                 <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#f8f9fa] to-transparent z-10 pointer-events-none hidden md:block"></div>
-                
-                <div 
+
+                <div
                     ref={sliderRef}
                     className="flex overflow-x-auto gap-4 py-2 no-scrollbar scroll-smooth"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
@@ -109,9 +109,9 @@ const HomeVideoMarquee = () => {
                         const isYoutube = video.videoType === 'youtube' || video.videoUrl?.includes('youtube.com') || video.videoUrl?.includes('youtu.be');
 
                         return (
-                            <Link 
-                                key={`${video._id}-${idx}`} 
-                                href={isPlaying ? '#' : `/latest-viral-videos/${video.slug || video._id}`} 
+                            <Link
+                                key={`${video._id}-${idx}`}
+                                href={isPlaying ? '#' : `/latest-viral-videos/${video.slug || video._id}`}
                                 onClick={(e) => isPlaying && e.preventDefault()}
                                 className="w-[280px] shrink-0 group relative rounded-2xl overflow-hidden shadow-md block no-underline bg-black"
                             >
@@ -119,7 +119,7 @@ const HomeVideoMarquee = () => {
                                     {isPlaying ? (
                                         <div className="w-full h-full bg-black relative">
                                             {isYoutube ? (
-                                                <iframe 
+                                                <iframe
                                                     className="w-full h-full"
                                                     src={getYoutubeEmbedUrl(video.videoUrl)}
                                                     title={video.title}
@@ -128,15 +128,15 @@ const HomeVideoMarquee = () => {
                                                     allowFullScreen
                                                 ></iframe>
                                             ) : (
-                                                <video 
+                                                <video
                                                     className="w-full h-full"
-                                                    controls 
+                                                    controls
                                                     autoPlay
                                                     src={video.videoUrl?.startsWith('http') ? video.videoUrl : `${baseUrl}${video.videoUrl}`}
                                                 >
                                                 </video>
                                             )}
-                                            <button 
+                                            <button
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     e.stopPropagation();
@@ -149,14 +149,14 @@ const HomeVideoMarquee = () => {
                                         </div>
                                     ) : (
                                         <>
-                                            <img 
-                                                src={video.image?.startsWith('/uploads/') ? `${baseUrl}${video.image}` : video.image} 
-                                                alt={video.title} 
-                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
+                                            <img
+                                                src={video.image?.startsWith('/uploads/') ? `${baseUrl}${video.image}` : video.image}
+                                                alt={video.title}
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
                                             />
                                             {/* Reference Image Style Play Button */}
                                             <div className="absolute bottom-4 right-4 z-20">
-                                                <button 
+                                                <button
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         e.stopPropagation();

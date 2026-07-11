@@ -17,25 +17,17 @@ const NewsGrid = () => {
 
   return (
     <div className="mb-16">
-      <div className="mb-10">
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-              <span className="text-[10px] lg:text-[11px] font-black text-slate-400 uppercase tracking-[0.3em]">World Pulse</span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">
-              Latest <span className="text-red-600">News</span>
-            </h2>
-          </div>
-          <Link href="/latest-news" className="text-slate-900 font-black no-underline text-[10px] lg:text-[11px] uppercase tracking-widest hover:text-red-600 transition-colors flex items-center gap-2 mb-2">
-            View All <i className="fas fa-arrow-right text-[10px]"></i>
-          </Link>
+      <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+        <div className="flex items-center gap-2">
+            <h3 className="font-black text-slate-900 tracking-tight text-xl md:text-2xl lg:text-3xl uppercase">Latest News</h3>
         </div>
+        <Link href="/latest-news" className="text-[10px] md:text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider flex items-center gap-1">
+            VIEW ALL <i className="fas fa-chevron-right text-[8px]"></i>
+        </Link>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {news.slice(0, 6).map((item, index) => (
+        {news.slice(12, 18).map((item, index) => (
           <Link href={`/latest-news/${item.slug || item._id}`} key={item._id} className="group cursor-pointer no-underline text-inherit block">
             <div className="relative aspect-video rounded-3xl overflow-hidden mb-6 shadow-xl border border-slate-100 bg-slate-50">
               <img 

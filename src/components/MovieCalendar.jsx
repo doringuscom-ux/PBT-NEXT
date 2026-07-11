@@ -67,58 +67,43 @@ const MovieCalendar = () => {
   }, [upcomingMovies]);
 
   return (
-    <div className="mb-16">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-        <div className="space-y-1">
-            <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-red-600 rounded-full animate-pulse shadow-sm shadow-red-600/50"></span>
-                <span className="text-[10px] lg:text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Upcoming & Beyond</span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">
-                Movie <span className="text-red-600">Calendar</span>
-            </h2>
+    <div className="my-6">
+      <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+        <div className="flex items-center gap-2">
+            <h3 className="font-black text-slate-900 tracking-tight text-xl md:text-2xl lg:text-3xl uppercase">Movie Calendar</h3>
         </div>
-        
         <div className="flex items-center gap-3">
-          <div className="flex gap-2 mr-4">
-            <button 
-              onClick={() => scroll('left')}
-              className="w-10 h-10 rounded-full border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-red-600 hover:text-red-600 transition-all"
-            >
-              <i className="fas fa-chevron-left text-xs"></i>
-            </button>
-            <button 
-              onClick={() => scroll('right')}
-              className="w-10 h-10 rounded-full border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:border-red-600 hover:text-red-600 transition-all"
-            >
-              <i className="fas fa-chevron-right text-xs"></i>
-            </button>
-          </div>
-          <Link href="/latest-movies" className="text-slate-900 text-[10px] lg:text-[11px] font-black uppercase hover:text-red-600 flex items-center gap-2 tracking-widest transition-colors mb-2">
-              View Schedule <i className="fas fa-arrow-right text-[10px]"></i>
+          <Link href="/latest-movies" className="text-[10px] md:text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider flex items-center gap-1">
+              VIEW SCHEDULE <i className="fas fa-chevron-right text-[8px]"></i>
           </Link>
         </div>
       </div>
 
-      <div className="relative mb-6 overflow-hidden h-[2px] w-full bg-slate-100 rounded-full">
-        <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-red-600 to-transparent animate-slide-infinite"></div>
-      </div>
+      {/* Slider Container */}
+      <div className="relative group/slider">
+        {/* Left Button */}
+        <button 
+          onClick={(e) => { e.preventDefault(); scroll('left'); }}
+          className="absolute left-0 top-[40%] -translate-y-1/2 -ml-3 lg:-ml-4 z-10 w-8 h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-600 hover:text-red-600 opacity-0 group-hover/slider:opacity-100 transition-opacity"
+        >
+          <i className="fas fa-chevron-left text-xs"></i>
+        </button>
 
-      <div 
-        ref={scrollRef}
-        className="flex gap-6 overflow-x-auto pb-8 hide-scrollbar"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
+        <div 
+          ref={scrollRef}
+          className="flex overflow-x-auto gap-4 lg:gap-6 snap-x snap-mandatory hide-scrollbar"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
         {upcomingMovies.map((movie, index) => {
           const isReleased = movie.releaseDate && new Date(movie.releaseDate) <= new Date();
           return (
             <Link 
               key={movie._id} 
               href={`${isReleased ? '/latest-movies' : '/latest-movies/upcoming'}/${movie.slug || movie._id}`}
-            className="min-w-[180px] bg-white rounded-lg overflow-hidden shadow-lg hover:-translate-y-1 transition-transform group no-underline text-inherit animate-slide-up"
+            className="group no-underline flex flex-col snap-start shrink-0 w-[calc(80%-16px)] sm:w-[calc(33.333%-11px)] md:w-[calc(25%-12px)] lg:w-[calc(16.666%-20px)] bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:-translate-y-1 transition-transform animate-slide-up"
             style={{ animationDelay: `${index * 150}ms` }}
           >
-            <div className="relative h-[250px] overflow-hidden">
+            <div className="relative aspect-[3/4] overflow-hidden">
                 <img 
                 src={movie.image} 
                 alt={movie.title} 
@@ -154,6 +139,15 @@ const MovieCalendar = () => {
           </Link>
             );
         })}
+        </div>
+
+        {/* Right Button */}
+        <button 
+          onClick={(e) => { e.preventDefault(); scroll('right'); }}
+          className="absolute right-0 top-[40%] -translate-y-1/2 -mr-3 lg:-mr-4 z-10 w-8 h-8 rounded-full bg-white shadow-md border border-gray-100 flex items-center justify-center text-gray-600 hover:text-red-600 opacity-0 group-hover/slider:opacity-100 transition-opacity"
+        >
+          <i className="fas fa-chevron-right text-xs"></i>
+        </button>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `

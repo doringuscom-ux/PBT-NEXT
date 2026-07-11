@@ -45,6 +45,7 @@ const AdminLayout = ({ children }) => {
     { name: 'Celebrities', path: '/admin/celebrities', icon: 'fas fa-star' },
     { name: 'Videos', path: '/admin/videos', icon: 'fas fa-video' },
     { name: 'Comments', path: '/admin/comments', icon: 'fas fa-comments text-primary-red' },
+    { name: 'Promotions', path: '/admin/promotions', icon: 'fas fa-bullhorn text-yellow-400' },
     { name: 'Subscribers', path: '/admin/subscribers', icon: 'fas fa-mail-bulk text-amber-500' },
     { name: 'WhatsApp Leads', path: '/admin/whatsapp-leads', icon: 'fab fa-whatsapp text-green-500' },
     { name: 'Promotion Leads', path: '/admin/promotion-leads', icon: 'fas fa-users-viewfinder text-blue-500' },

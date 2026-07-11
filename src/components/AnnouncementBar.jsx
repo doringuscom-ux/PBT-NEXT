@@ -30,7 +30,7 @@ const AnnouncementBar = () => {
   }, [announcements, isHovered, currentIndex]);
 
   if (announcements.length === 0) return (
-    <div className="w-full h-12 lg:h-16 bg-slate-900 border-y border-slate-700/50 skeleton">
+    <div className="w-full h-10 lg:h-12 bg-slate-900 border-y border-slate-700/50 skeleton">
         <div className="w-full max-w-[1800px] mx-auto flex items-center h-full px-12">
             <div className="w-48 h-4 bg-white/5 rounded-full animate-pulse"></div>
         </div>
@@ -43,7 +43,7 @@ const AnnouncementBar = () => {
         onMouseLeave={() => setIsHovered(false)}
         className="w-full bg-gradient-to-r from-slate-900 via-[#1a1f2e] to-slate-900 border-y border-slate-700/50 overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12)] group cursor-pointer relative z-20"
     >
-        <div className="w-full max-w-[1800px] mx-auto flex items-center h-12 lg:h-16 relative">
+        <div className="w-full max-w-[1800px] mx-auto flex items-center h-10 lg:h-12 relative">
             {/* Glowing effect behind breaking badge */}
             <div className="absolute left-0 top-0 bottom-0 w-32 md:w-48 bg-[#e61e25]/25 blur-2xl pointer-events-none"></div>
  
