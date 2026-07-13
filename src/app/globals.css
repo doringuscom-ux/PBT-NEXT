@@ -20,6 +20,9 @@
 }
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+  }
   body {
     font-family: 'Open Sans', 'Roboto', Arial, Helvetica, sans-serif;
   }
@@ -36,7 +39,7 @@
 }
 
 body {
-  @apply bg-[#f9f9f9] text-text-dark leading-relaxed;
+  @apply bg-[#f9f9f9] text-text-dark leading-relaxed overflow-x-hidden;
 }
 
 /* Custom scrollbar for horizontal movie slider */

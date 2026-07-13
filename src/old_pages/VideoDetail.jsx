@@ -4,9 +4,9 @@ import Link from 'next/link';
 
 
 import React, { useEffect, useState } from 'react';
-;
 import { useData } from '../context/DataContext';
 import CommentSection from '../components/CommentSection';
+import AutoLinker from '../components/AutoLinker';
 import { API_BASE_URL } from '../api';
 
 const VideoDetail = () => {
@@ -50,7 +50,7 @@ const VideoDetail = () => {
                     {/* Main Content (Video & Details) */}
                     <div className="lg:w-[65%] xl:w-[65%] min-w-0">
                         <h1 className="text-3xl md:text-4xl font-black mb-6 text-slate-900 leading-[1.15] italic tracking-tight uppercase font-article-title">
-                            '{video.title}'
+                            {video.title}
                         </h1>
 
                         <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-gray-100">
@@ -117,9 +117,9 @@ const VideoDetail = () => {
                         <div className="mt-8 max-w-none text-slate-700 font-article-text bg-gray-50 p-6 rounded-2xl border border-gray-100">
                             <h4 className="text-[10px] font-black uppercase tracking-widest text-primary-red mb-4">Description</h4>
                             {video.description ? (
-                                <div 
+                                <AutoLinker 
                                     className="rich-text-content"
-                                    dangerouslySetInnerHTML={{ __html: video.description }} 
+                                    html={video.description} 
                                 />
                             ) : (
                                 <p>Exclusive {video.title} coverage only on our Cinematic Hub. Stay updated with the latest in entertainment world.</p>

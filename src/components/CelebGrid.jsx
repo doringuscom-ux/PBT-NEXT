@@ -105,7 +105,7 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
   }, [displayedCelebs]);
 
   return (
-    <div className="mb-12 overflow-hidden relative">
+    <div className="mb-12 overflow-hidden relative px-4 lg:px-20 xl:px-32 2xl:px-48">
 
       <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
         <div className="flex items-center gap-2">
@@ -141,11 +141,12 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
             let nameStyle = "font-black text-[13px] mb-1 group-hover:text-primary-red transition-colors line-clamp-1 italic tracking-tight";
 
             if (!industry) {
-              // Trending Celebrities - Circular Avatar Style
-              cardStyle = "w-[150px] md:w-[170px] shrink-0 text-center group no-underline text-inherit block";
-              imgContainerStyle = "relative w-full pt-[100%] rounded-full overflow-hidden mb-3 border-[3px] border-slate-100 group-hover:border-primary-red transition-all shadow-sm group-hover:shadow-lg group-hover:-translate-y-1";
-              infoStyle = "px-1";
-              badgeStyle = "bg-slate-900 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider inline-block";
+              // Trending Celebrities - Premium Story Ring Avatar
+              cardStyle = "w-[110px] md:w-[130px] shrink-0 text-center group no-underline text-inherit block flex flex-col items-center";
+              imgContainerStyle = "relative w-full pt-[100%] rounded-full mb-3 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 shadow-sm transition-all duration-300 group-hover:shadow-[0_10px_20px_rgba(236,72,153,0.3)] group-hover:-translate-y-1.5";
+              infoStyle = "px-1 w-full";
+              badgeStyle = "hidden"; // Hide badge for a cleaner look
+              nameStyle = "font-black text-[12px] md:text-[14px] text-slate-800 mb-0 group-hover:text-pink-600 transition-colors line-clamp-1 tracking-tight";
             } else if (industry === 'Hollywood') {
               // Hollywood - Premium Square Style with Blue Accents
               cardStyle = "w-[220px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm text-center hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 group no-underline text-inherit block overflow-hidden";
@@ -162,7 +163,9 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
                     src={celeb.image} 
                     alt={celeb.name} 
                     loading="lazy"
-                    className="absolute top-0 left-0 w-full h-full object-cover object-[center_top] transition-transform duration-700 group-hover:scale-110"
+                    className={!industry 
+                      ? "absolute top-[3px] left-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] rounded-full object-cover object-[center_top] border-[3px] border-white bg-white transition-transform duration-700 group-hover:scale-[1.02]"
+                      : "absolute top-0 left-0 w-full h-full object-cover object-[center_top] transition-transform duration-700 group-hover:scale-110"}
                   />
                 </div>
                 <div className={infoStyle}>

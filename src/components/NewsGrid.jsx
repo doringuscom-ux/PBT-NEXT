@@ -6,7 +6,7 @@ import { useData } from '../context/DataContext';
 const NewsGrid = () => {
   const { news } = useData();
   if (news.length === 0) return (
-    <div className="mb-16">
+    <div className="mb-16 px-4 lg:px-20 xl:px-32 2xl:px-48">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {[1,2,3].map(i => (
           <div key={i} className="h-[300px] rounded-3xl skeleton opacity-20"></div>
@@ -16,7 +16,7 @@ const NewsGrid = () => {
   );
 
   return (
-    <div className="mb-16">
+    <div className="mb-16 px-4 lg:px-20 xl:px-32 2xl:px-48">
       <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
         <div className="flex items-center gap-2">
             <h3 className="font-black text-slate-900 tracking-tight text-xl md:text-2xl lg:text-3xl uppercase">Latest News</h3>
