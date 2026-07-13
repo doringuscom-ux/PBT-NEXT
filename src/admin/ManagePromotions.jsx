@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import AdminLayout from '@/layouts/AdminLayout';
 import { getPromotions, addPromotion, updatePromotion, deletePromotion } from '@/api';
 import Modal from '@/components/Modal';
-import Cropper from 'react-easy-crop';
+import ImageCropperModal from '@/components/ImageCropperModal';
 
 const ManagePromotions = () => {
     const [promotions, setPromotions] = useState([]);
@@ -35,9 +35,6 @@ const ManagePromotions = () => {
     // Cropper State
     const [imageSrc, setImageSrc] = useState(null);
     const [cropType, setCropType] = useState('desktop'); // 'desktop', 'tablet', or 'mobile'
-    const [crop, setCrop] = useState({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
-    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
     useEffect(() => {
         fetchPromotions();
@@ -74,69 +71,24 @@ const ManagePromotions = () => {
         }
     };
 
-    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-        setCroppedAreaPixels(croppedAreaPixels);
-    }, []);
-
-    const createImage = (url) =>
-        new Promise((resolve, reject) => {
-            const image = new Image();
-            image.addEventListener('load', () => resolve(image));
-            image.addEventListener('error', (error) => reject(error));
-            image.setAttribute('crossOrigin', 'anonymous');
-            image.src = url;
-        });
-
-    const getCroppedImg = async (imageSrc, pixelCrop) => {
-        const image = await createImage(imageSrc);
-        const canvas = document.createElement('canvas');
-        canvas.width = pixelCrop.width;
-        canvas.height = pixelCrop.height;
-        const ctx = canvas.getContext('2d');
-
-        ctx.drawImage(
-            image,
-            pixelCrop.x,
-            pixelCrop.y,
-            pixelCrop.width,
-            pixelCrop.height,
-            0,
-            0,
-            pixelCrop.width,
-            pixelCrop.height
-        );
-
-        return new Promise((resolve) => {
-            canvas.toBlob((file) => {
-                resolve(file);
-            }, 'image/jpeg');
-        });
-    };
-
-    const applyCrop = async () => {
-        try {
-            const croppedImageBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
-            const objectUrl = URL.createObjectURL(croppedImageBlob);
-            
-            if (cropType === 'desktop') {
-                setImageFile(croppedImageBlob);
-                setCroppedImagePreviewUrl(objectUrl);
-                setImageUrl('');
-            } else if (cropType === 'tablet') {
-                setTabletImageFile(croppedImageBlob);
-                setCroppedTabletPreviewUrl(objectUrl);
-                setTabletImageUrl('');
-            } else {
-                setMobileImageFile(croppedImageBlob);
-                setCroppedMobilePreviewUrl(objectUrl);
-                setMobileImageUrl('');
-            }
-            
-            setImageSrc(null); // Hide cropper
-        } catch (e) {
-            console.error(e);
-            alert("Error cropping image");
+    const handleCropComplete = (croppedFile) => {
+        const objectUrl = URL.createObjectURL(croppedFile);
+        
+        if (cropType === 'desktop') {
+            setImageFile(croppedFile);
+            setCroppedImagePreviewUrl(objectUrl);
+            setImageUrl('');
+        } else if (cropType === 'tablet') {
+            setTabletImageFile(croppedFile);
+            setCroppedTabletPreviewUrl(objectUrl);
+            setTabletImageUrl('');
+        } else {
+            setMobileImageFile(croppedFile);
+            setCroppedMobilePreviewUrl(objectUrl);
+            setMobileImageUrl('');
         }
+        
+        setImageSrc(null); // Hide cropper
     };
 
     const handleSubmit = async (e) => {
@@ -484,57 +436,13 @@ const ManagePromotions = () => {
                 </Modal>
 
                 {imageSrc && (
-                    <div className="fixed inset-0 z-[10001] flex items-center justify-center bg-black/80">
-                        <div className="bg-white rounded-lg w-11/12 max-w-4xl flex flex-col shadow-2xl overflow-hidden">
-                            
-                            {/* Header */}
-                            <div className="flex justify-between items-center p-4 border-b">
-                                <h2 className="text-xl font-semibold text-gray-800">
-                                    Crop {cropType === 'desktop' ? 'Desktop' : cropType === 'tablet' ? 'Tablet' : 'Mobile'} Banner ({cropType === 'desktop' ? '1240:300' : cropType === 'tablet' ? '2:1' : '16:9'})
-                                </h2>
-                                <button type="button" onClick={() => setImageSrc(null)} className="text-gray-400 hover:text-gray-600">
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            {/* Cropper Body */}
-                            <div className="relative w-full bg-gray-100" style={{ height: '60vh', minHeight: '400px' }}>
-                                <Cropper
-                                    image={imageSrc}
-                                    crop={crop}
-                                    zoom={zoom}
-                                    aspect={
-                                        cropType === 'desktop' ? (1240 / 300) : 
-                                        cropType === 'tablet' ? (2 / 1) : 
-                                        (16 / 9)
-                                    }
-                                    onCropChange={setCrop}
-                                    onCropComplete={onCropComplete}
-                                    onZoomChange={setZoom}
-                                />
-                            </div>
-
-                            {/* Footer */}
-                            <div className="flex justify-end items-center gap-3 p-4 bg-gray-50 border-t">
-                                <button 
-                                    type="button"
-                                    onClick={() => setImageSrc(null)} 
-                                    className="px-6 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 font-medium"
-                                >
-                                    Cancel
-                                </button>
-                                <button 
-                                    type="button"
-                                    onClick={applyCrop} 
-                                    className="px-6 py-2 bg-[#f0506e] text-white rounded-md hover:bg-red-600 font-medium"
-                                >
-                                    Crop & Upload
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <ImageCropperModal
+                        isOpen={!!imageSrc}
+                        onClose={() => setImageSrc(null)}
+                        imageSrc={imageSrc}
+                        aspect={cropType === 'desktop' ? (1240 / 220) : cropType === 'tablet' ? (4 / 1) : (16 / 7)}
+                        onCropComplete={handleCropComplete}
+                    />
                 )}
             </div>
         </AdminLayout>

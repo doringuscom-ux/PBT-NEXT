@@ -81,12 +81,12 @@ const PromotionCarousel = () => {
     return (
         <>
         <style>{`
-            .promo-aspect-box { aspect-ratio: 16 / 9; }
+            .promo-aspect-box { aspect-ratio: 16 / 7; }
             @media (min-width: 768px) {
-                .promo-aspect-box { aspect-ratio: 2 / 1; }
+                .promo-aspect-box { aspect-ratio: 4 / 1; }
             }
             @media (min-width: 1024px) {
-                .promo-aspect-box { aspect-ratio: 1240 / 300; }
+                .promo-aspect-box { aspect-ratio: 1240 / 220; }
             }
         `}</style>
         <div 

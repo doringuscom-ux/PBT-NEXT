@@ -11,7 +11,7 @@ const AutoLinker = ({ html, className = '' }) => {
   // Build the dictionary of keywords to link
   const keywords = useMemo(() => {
     const list = [];
-    
+
     // Add celebs
     (celebs || []).forEach(c => {
       if (c.name && c.name.length > 3) {
@@ -62,14 +62,14 @@ const AutoLinker = ({ html, className = '' }) => {
   const processedHtml = useMemo(() => {
     if (!html || !regex) return html || '';
     if (!mounted || typeof window === 'undefined') return html;
-    
+
     // Parse the HTML using native DOMParser
     const parser = new DOMParser();
     const doc = parser.parseFromString(html.replace(/&nbsp;|\u00a0/g, ' '), 'text/html');
-    
+
     // Walker to find text nodes
     const walker = document.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, {
-      acceptNode: function(node) {
+      acceptNode: function (node) {
         let parent = node.parentNode;
         while (parent && parent !== doc.body) {
           const tag = parent.tagName?.toLowerCase();
@@ -93,38 +93,38 @@ const AutoLinker = ({ html, className = '' }) => {
       if (regex.test(text)) {
         regex.lastIndex = 0; // reset regex
         const parts = text.split(regex);
-        
+
         const fragment = document.createDocumentFragment();
-        
+
         parts.forEach((part, index) => {
           if (index % 2 === 0) {
-             fragment.appendChild(document.createTextNode(part));
+            fragment.appendChild(document.createTextNode(part));
           } else {
-             const matchedKeyword = keywords.find(k => k.keyword.toLowerCase() === part.toLowerCase());
-             if (matchedKeyword) {
-               const a = document.createElement('a');
-               a.href = matchedKeyword.url;
-               a.className = "text-blue-600 hover:text-blue-800 underline font-bold transition-colors mx-1";
-               a.setAttribute('data-auto-link', 'true');
-               a.textContent = part;
-               fragment.appendChild(a);
-             } else {
-               fragment.appendChild(document.createTextNode(part));
-             }
+            const matchedKeyword = keywords.find(k => k.keyword.toLowerCase() === part.toLowerCase());
+            if (matchedKeyword) {
+              const a = document.createElement('a');
+              a.href = matchedKeyword.url;
+              a.className = "text-blue-600 hover:text-blue-800 underline font-bold transition-colors mx-1";
+              a.setAttribute('data-auto-link', 'true');
+              a.textContent = part;
+              fragment.appendChild(a);
+            } else {
+              fragment.appendChild(document.createTextNode(part));
+            }
           }
         });
-        
+
         node.parentNode.replaceChild(fragment, node);
       }
     });
 
     return doc.body.innerHTML;
-  }, [html, regex, keywords]);
+  }, [html, regex, keywords, mounted]);
 
   if (!html) return null;
 
   return (
-    <div 
+    <div
       className={`rich-text-content ${className}`}
       dangerouslySetInnerHTML={{ __html: processedHtml }}
       onClick={handleClick}

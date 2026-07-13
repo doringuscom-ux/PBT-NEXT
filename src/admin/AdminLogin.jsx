@@ -45,8 +45,11 @@ const AdminLogin = () => {
     <div className="min-h-screen bg-light-bg flex items-center justify-center px-5">
       <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-8">
         <div className="text-center mb-10 flex flex-col items-center">
-          <Logo className="h-24 w-auto mb-4" />
-          <p className="text-text-gray font-semibold">Sign in to manage your content</p>
+          <div className="bg-[#1a1a1a] p-4 rounded-xl mb-5 w-full flex justify-center shadow-inner border border-gray-100">
+            <Logo className="h-20 w-auto" />
+          </div>
+          <p className="text-text-gray font-semibold text-lg">Admin Control Panel</p>
+          <p className="text-gray-500 text-sm mt-1">Sign in to manage your content</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">

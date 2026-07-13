@@ -95,23 +95,23 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
 
       {/* Comment Form */}
       <form onSubmit={handleSubmit} className="mb-6 group">
-        <div className="relative bg-white/5 rounded-xl p-0.5 transition-all focus-within:ring-2 focus-within:ring-yellow-400/5 focus-within:bg-white/10 border border-white/10 group-focus-within:border-yellow-400/20 shadow-sm">
+        <div className="relative bg-slate-50 rounded-2xl transition-all focus-within:ring-2 focus-within:ring-primary-red/20 focus-within:bg-white border border-slate-200 shadow-sm overflow-hidden">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Share your thoughts..."
-            className="w-full h-20 p-4 bg-transparent outline-none text-white font-semibold resize-none text-sm placeholder:text-gray-500 placeholder:italic"
+            className="w-full h-24 p-5 bg-transparent outline-none text-slate-900 font-medium resize-none text-sm placeholder:text-slate-400 placeholder:italic transition-all"
             disabled={isSubmitting}
           />
-          <div className="flex justify-between items-center p-2 border-t border-white/10 bg-black/20 rounded-b-lg">
-             <div className="flex items-center gap-2 px-2">
-               <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Live discussion</span>
+          <div className="flex justify-between items-center p-3 bg-white border-t border-slate-100">
+             <div className="flex items-center gap-2 px-3">
+               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+               <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Live discussion</span>
              </div>
              <button
               type="submit"
               disabled={!newComment.trim() || isSubmitting}
-              className="bg-white/10 border border-white/20 text-white px-6 py-2 rounded-lg font-black uppercase tracking-widest text-[9px] hover:bg-yellow-400 hover:text-black hover:shadow-lg transition-all"
+              className={`px-8 py-2.5 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all duration-300 ${!newComment.trim() || isSubmitting ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-slate-900 text-white hover:bg-[#f0506e] shadow-lg hover:shadow-[#f0506e]/30 hover:-translate-y-0.5'}`}
             >
               {isSubmitting ? 'Posting...' : 'Post'}
             </button>
