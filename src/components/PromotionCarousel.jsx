@@ -90,10 +90,10 @@ const PromotionCarousel = () => {
             }
         `}</style>
         <div 
-            className="relative w-full max-w-[1600px] mx-auto overflow-hidden py-2 md:py-4 mb-4 group"
+            className="relative w-full overflow-hidden group py-2 md:py-4 mb-4"
         >
-            {/* Dummy element to dictate perfect height based on 85% width */}
-            <div className="w-[85%] mx-auto promo-aspect-box opacity-0 pointer-events-none"></div>
+            {/* Dummy element to dictate perfect height based on 80% width */}
+            <div className="w-[80%] mx-auto promo-aspect-box opacity-0 pointer-events-none"></div>
 
             {/* Carousel Track - Absolute positioned slides */}
             <div className="absolute inset-0 flex items-center justify-center py-2 md:py-4">
@@ -118,7 +118,7 @@ const PromotionCarousel = () => {
                     return (
                         <div 
                             key={`${promo._id || idx}-${idx}`} 
-                            className="absolute top-2 bottom-2 md:top-4 md:bottom-4 left-0 right-0 mx-auto w-[85%] px-1 md:px-2 flex-shrink-0"
+                            className="absolute top-2 bottom-2 md:top-4 md:bottom-4 left-0 right-0 mx-auto w-[80%] px-0.5 md:px-1 flex-shrink-0"
                             style={{
                                 transform: `translateX(${offset * 100}%)`,
                                 transitionDuration: isTransitioning ? '700ms' : '0ms',
@@ -127,7 +127,7 @@ const PromotionCarousel = () => {
                         >
                             {/* Inner container with rounded corners and conditional scaling */}
                             <div 
-                                className={`w-full h-full relative rounded-xl overflow-hidden transition-all duration-700 ease-out ${isVisualActive ? 'scale-100 opacity-100 shadow-xl' : 'scale-[0.98] opacity-70'}`}
+                                className={`w-full h-full relative rounded-xl overflow-hidden transition-all duration-700 ease-out ${isVisualActive ? 'scale-100 opacity-100 shadow-xl' : 'scale-[0.99] opacity-70'}`}
                             >
                                 {promo.link ? (
                                     <Link href={promo.link} className="block w-full h-full">

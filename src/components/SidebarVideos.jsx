@@ -24,7 +24,7 @@ export default function SidebarVideos() {
     if (!trendingVideos.length) return null;
 
     return (
-        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col h-full">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-5 flex flex-col h-full">
             {/* Header */}
             <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4 shrink-0">
                 <span className="relative flex h-3 w-3">
@@ -35,12 +35,12 @@ export default function SidebarVideos() {
             </div>
 
             {/* List (Scrollable) */}
-            <div className="flex flex-col gap-4 flex-1 min-h-0 overflow-y-auto pr-2 custom-scrollbar">
+            <div className="flex flex-col gap-0.5 flex-1 min-h-0 overflow-y-auto pr-2 custom-scrollbar">
                 {trendingVideos.map((video) => (
                     <Link
                         key={video._id}
                         href={`/latest-viral-videos/${video.slug || video._id}`}
-                        className="group relative flex items-center gap-4 no-underline p-2 rounded-lg hover:bg-slate-50 transition-colors"
+                        className="group relative flex items-center gap-4 no-underline py-1 px-2 rounded-lg hover:bg-slate-50 transition-colors"
                     >
                         {/* Thumbnail */}
                         <div className="w-28 h-20 rounded-md overflow-hidden bg-slate-100 shrink-0 relative">
@@ -69,9 +69,9 @@ export default function SidebarVideos() {
             <div className="mt-auto pt-4 border-t border-gray-100">
                 <Link
                     href="/latest-viral-videos"
-                    className="block w-full bg-red-600 hover:bg-red-700 text-white text-center py-3.5 rounded-lg text-xs md:text-sm font-bold uppercase tracking-widest transition-colors shadow-md"
+                    className="block w-full bg-[#d6182a] hover:bg-[#c21525] text-white text-center py-3 rounded-md text-[13px] font-bold uppercase transition-colors"
                 >
-                    View All Videos <i className="fas fa-chevron-right ml-2 text-[10px]"></i>
+                    View All Videos <i className="fas fa-angle-right ml-1 text-[13px]"></i>
                 </Link>
             </div>
         </div>

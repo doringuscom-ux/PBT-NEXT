@@ -17,34 +17,35 @@ import CompactCelebSlider from '@/components/CompactCelebSlider';
 export default function HomeClient() {
   return (
     <MainLayout>
+      <PromotionCarousel />
+
       <main className="page-container py-2 lg:py-4">
         <h1 className="sr-only">Pbtadka - Latest News, Movies, & Celebrity Updates</h1>
 
         <div className="space-y-8 lg:space-y-12">
-          
-          <PromotionCarousel />
-
-          {/* Top Row: Hero and Sidebar ONLY */}
-          <div className="flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-10 xl:gap-12 items-stretch">
-            {/* Left Column (Hero) */}
-            <div className="flex-1 lg:w-[65%] xl:w-[68%] min-w-0 flex flex-col">
-              <Hero />
-            </div>
-
-            {/* Right Column (Sidebar) */}
-            <aside className="hidden lg:block lg:w-[35%] xl:w-[32%] relative">
-              <div className="absolute inset-0">
-                <SidebarVideos />
-              </div>
-            </aside>
-          </div>
 
           {/* Compact Sliders Row */}
           <div className="flex flex-col">
-            <CompactNewsSlider />
             <CompactMoviesSlider />
+            <CompactNewsSlider />
             <CompactTrailersSlider />
             <CompactCelebSlider />
+            
+            {/* Hero and Sidebar Row (Moved below Celebrities) */}
+            <div className="flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-10 xl:gap-12 items-stretch lg:px-24 xl:px-48 my-8">
+              {/* Left Column (Hero) */}
+              <div className="flex-1 lg:w-[65%] xl:w-[66%] min-w-0 flex flex-col">
+                <Hero />
+              </div>
+
+              {/* Right Column (Sidebar) */}
+              <aside className="hidden lg:block lg:w-[35%] xl:w-[34%] relative">
+                <div className="absolute inset-0">
+                  <SidebarVideos />
+                </div>
+              </aside>
+            </div>
+
             <MovieCalendar />
           </div>
 
