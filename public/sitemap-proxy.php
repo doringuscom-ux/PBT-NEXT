@@ -9,7 +9,7 @@
 header('Content-Type: application/xml; charset=utf-8');
 
 // The live backend sitemap URL
-$backendSitemapUrl = 'https://pbt-liart.vercel.app/sitemap.xml';
+$backendSitemapUrl = 'https://pbt-iyjf.onrender.com/sitemap.xml';
 
 // Initialize cURL
 $ch = curl_init();
