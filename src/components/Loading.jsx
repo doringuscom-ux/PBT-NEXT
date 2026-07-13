@@ -3,7 +3,10 @@ import React from 'react';
 
 const Loading = ({ fullScreen = true, progress = 0 }) => {
   return (
-    <div className={`flex flex-col items-center justify-center bg-slate-950 z-[2000] overflow-hidden ${fullScreen ? 'fixed inset-0 w-screen h-screen' : 'w-full py-24 rounded-[3rem] my-8'}`}>
+    <div 
+      className={`flex flex-col items-center justify-center bg-slate-950 z-[2000] overflow-hidden ${fullScreen ? 'fixed inset-0 w-screen h-screen' : 'w-full py-24 rounded-[3rem] my-8'}`}
+      style={{ backgroundColor: '#020617', color: 'white', fontFamily: 'sans-serif', ...(fullScreen ? { position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' } : {}) }}
+    >
       
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 opacity-20">
@@ -18,8 +21,13 @@ const Loading = ({ fullScreen = true, progress = 0 }) => {
         </div>
 
         {/* Logo with Soft Pulse */}
-        <div className="relative px-12 py-8 bg-black/40 backdrop-blur-md rounded-2xl border border-accent-gold/10 shadow-2xl animate-pulse-gentle">
-           <img src="/Logo1.png" alt="Loading Logo" className="h-24 md:h-32 w-auto mix-blend-screen filter drop-shadow-[0_0_30px_rgba(255,193,7,0.5)] drop-shadow-[0_0_15px_rgba(211,47,47,0.4)]" />
+        <div className="relative px-12 py-8 bg-black/40 backdrop-blur-md rounded-2xl border border-accent-gold/10 shadow-2xl animate-pulse-gentle" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center' }}>
+           <img 
+              src="/Logo1.png" 
+              alt="Loading Logo" 
+              className="h-24 md:h-32 w-auto mix-blend-screen filter drop-shadow-[0_0_30px_rgba(255,193,7,0.5)] drop-shadow-[0_0_15px_rgba(211,47,47,0.4)]" 
+              style={{ maxHeight: '100px', width: 'auto', margin: '0 auto' }}
+           />
         </div>
 
         {/* corner accents */}
@@ -30,8 +38,8 @@ const Loading = ({ fullScreen = true, progress = 0 }) => {
       {/* Loading Progress & Text */}
       <div className="mt-16 flex flex-col items-center gap-6 relative z-10">
         <div className="flex flex-col items-center text-center">
-            <h2 className="text-sm md:text-base font-black text-white uppercase tracking-[0.6em] mb-2 animate-shimmer">
-                Initializing <span className="text-accent-gold drop-shadow-[0_0_8px_rgba(255,193,7,0.4)]">Cinematic</span> Experience
+            <h2 className="text-sm md:text-base font-black text-white uppercase tracking-[0.6em] mb-2 animate-shimmer" style={{ letterSpacing: '0.6em', textTransform: 'uppercase', fontSize: '14px', margin: '16px 0 8px 0' }}>
+                Initializing <span className="text-accent-gold drop-shadow-[0_0_8px_rgba(255,193,7,0.4)]" style={{ color: '#fbbf24' }}>Cinematic</span> Experience
             </h2>
             <p className="text-[10px] md:text-xs font-medium text-white/40 uppercase tracking-[0.4em] font-mono flex items-center gap-3">
                 <span className="w-8 h-[1px] bg-white/20"></span>

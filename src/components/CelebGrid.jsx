@@ -1,9 +1,6 @@
 "use client";
 import Link from 'next/link';
-
-
 import { useRef, useEffect } from 'react';
-;
 import { useData } from '../context/DataContext';
 
 const CelebGrid = ({ industry, excludeTrending = false }) => {
@@ -59,7 +56,7 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
     return bFollowers - aFollowers;
   });
 
-  const displayedCelebs = sortedCelebs.slice(0, 10);
+  const displayedCelebs = sortedCelebs.slice(0, 8);
 
   const sliderRef = useRef(null);
 
@@ -104,81 +101,109 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
     };
   }, [displayedCelebs]);
 
+  const formatFollowers = (count) => {
+    if (count >= 1000000) return (count / 1000000).toFixed(1) + 'M';
+    if (count >= 1000) return (count / 1000).toFixed(1) + 'K';
+    return count;
+  };
+
   return (
     <div className="mb-12 overflow-hidden relative px-4 lg:px-20 xl:px-32 2xl:px-48">
-
-      <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-        <div className="flex items-center gap-2">
-            <h3 className="font-black text-slate-900 tracking-tight text-xl md:text-2xl lg:text-3xl uppercase">
-              {industry ? `${industry} Celebrities` : 'Trending Celebrities'}
-            </h3>
+      <div className="w-full">
+        <div className="flex justify-between items-center mb-6 border-b pb-3 border-gray-100">
+          <div className="flex items-center gap-3">
+              {!industry && (
+                <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center border border-red-100">
+                    <i className="fas fa-arrow-trend-up text-red-500 text-sm"></i>
+                </div>
+              )}
+              <h3 className="font-black tracking-tight text-xl md:text-2xl lg:text-3xl uppercase text-slate-900">
+                {industry ? `${industry} Celebrities` : 'Trending Celebrities'}
+              </h3>
+          </div>
+          <Link 
+            href={industry ? `/celebrities/${industry.toLowerCase().trim().replace(/\s+/g, '-')}` : "/celebrities"} 
+            className="text-[10px] md:text-xs font-bold uppercase tracking-wider flex items-center gap-1 text-slate-500 hover:text-red-600 transition-colors group"
+          >
+              VIEW ALL <i className="fas fa-chevron-right text-[8px] ml-1 group-hover:translate-x-1 transition-transform"></i>
+          </Link>
         </div>
-        <Link 
-          href={industry ? `/celebrities/${industry.toLowerCase().trim().replace(/\s+/g, '-')}` : "/celebrities"} 
-          className="text-[10px] md:text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider flex items-center gap-1"
-        >
-            VIEW ALL <i className="fas fa-chevron-right text-[8px]"></i>
-        </Link>
-      </div>
-      
-      <div className="celeb-marquee-container relative w-full overflow-hidden py-2">
-        {/* Gradient Masks for smooth fading edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#f8f9fa] to-transparent z-10 pointer-events-none hidden lg:block"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#f8f9fa] to-transparent z-10 pointer-events-none hidden lg:block"></div>
         
-        <div 
-          ref={sliderRef}
-          className="flex overflow-x-auto gap-4 px-2 no-scrollbar"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
-          {[...displayedCelebs, ...displayedCelebs].map((celeb, idx) => {
-            // Default (Bollywood) styling
-            let cardStyle = "w-[200px] shrink-0 bg-white rounded-xl shadow-md text-center hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 group no-underline text-inherit block overflow-hidden";
-            let imgContainerStyle = "relative w-full pt-[125%] overflow-hidden bg-slate-100";
-            let infoStyle = "p-3 border-t-2 border-transparent group-hover:border-primary-red transition-colors";
-            let badgeStyle = "bg-primary-red text-white text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-wider inline-block shadow-sm border border-white/10";
-            let nameStyle = "font-black text-[13px] mb-1 group-hover:text-primary-red transition-colors line-clamp-1 italic tracking-tight";
+        <div className="celeb-marquee-container relative w-full overflow-hidden py-4">
+          {/* Gradient Masks for smooth fading edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none hidden lg:block bg-gradient-to-r from-white to-transparent"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none hidden lg:block bg-gradient-to-l from-white to-transparent"></div>
+          
+          <div 
+            ref={sliderRef}
+            className="flex overflow-x-auto gap-4 lg:gap-5 px-2 no-scrollbar pb-6 pt-2"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
+            {[...displayedCelebs, ...displayedCelebs].map((celeb, idx) => {
+              
+              const getBaseFollowers = (id) => {
+                  if (!id) return 25400;
+                  const num = parseInt(id.toString().slice(-6), 16) || 0;
+                  return (num % 90000) + 10000;
+              };
 
-            if (!industry) {
-              // Trending Celebrities - Premium Story Ring Avatar
-              cardStyle = "w-[110px] md:w-[130px] shrink-0 text-center group no-underline text-inherit block flex flex-col items-center";
-              imgContainerStyle = "relative w-full pt-[100%] rounded-full mb-3 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 shadow-sm transition-all duration-300 group-hover:shadow-[0_10px_20px_rgba(236,72,153,0.3)] group-hover:-translate-y-1.5";
-              infoStyle = "px-1 w-full";
-              badgeStyle = "hidden"; // Hide badge for a cleaner look
-              nameStyle = "font-black text-[12px] md:text-[14px] text-slate-800 mb-0 group-hover:text-pink-600 transition-colors line-clamp-1 tracking-tight";
-            } else if (industry === 'Hollywood') {
-              // Hollywood - Premium Square Style with Blue Accents
-              cardStyle = "w-[220px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm text-center hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 group no-underline text-inherit block overflow-hidden";
-              imgContainerStyle = "relative w-full pt-[100%] overflow-hidden bg-slate-200";
-              infoStyle = "p-4 border-b-[3px] border-transparent group-hover:border-blue-600 transition-colors bg-white";
-              badgeStyle = "bg-blue-600 text-white text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-wider inline-block shadow-sm";
-              nameStyle = "font-black text-[14px] mb-1 group-hover:text-blue-600 transition-colors line-clamp-1 tracking-tight";
-            }
+              const originalFans = (celeb.followers?.length || 0) + (celeb.bonusFollowers || 0);
+              const followersCount = getBaseFollowers(celeb._id) + originalFans;
+              const formattedFollowers = formatFollowers(followersCount);
+              
+              // Default (Bollywood) styling
+              let cardStyle = "w-[200px] shrink-0 bg-white rounded-xl shadow-md text-center hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 group no-underline text-inherit block overflow-hidden";
+              let imgContainerStyle = "relative w-full pt-[125%] overflow-hidden bg-slate-100";
+              let infoStyle = "p-3 border-t-2 border-transparent group-hover:border-primary-red transition-colors";
+              let badgeStyle = "bg-primary-red text-white text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-wider inline-block shadow-sm border border-white/10";
+              let nameStyle = "font-black text-[13px] mb-1 group-hover:text-primary-red transition-colors line-clamp-1 italic tracking-tight";
+              let imgClass = "absolute top-0 left-0 w-full h-full object-cover object-[center_top] transition-transform duration-700 group-hover:scale-110";
 
-            return (
-              <Link href={`/celebrities/${celeb.slug || celeb._id}`} key={`${celeb._id}-${idx}`} className={cardStyle}>
-                <div className={imgContainerStyle}>
-                  <img 
-                    src={celeb.image} 
-                    alt={celeb.name} 
-                    loading="lazy"
-                    className={!industry 
-                      ? "absolute top-[3px] left-[3px] w-[calc(100%-6px)] h-[calc(100%-6px)] rounded-full object-cover object-[center_top] border-[3px] border-white bg-white transition-transform duration-700 group-hover:scale-[1.02]"
-                      : "absolute top-0 left-0 w-full h-full object-cover object-[center_top] transition-transform duration-700 group-hover:scale-110"}
-                  />
-                </div>
-                <div className={infoStyle}>
-                  <div className={nameStyle}>{celeb.name}</div>
-                  <div className="flex justify-center">
-                      <span className={badgeStyle}>
-                          {celeb.category || celeb.role}
-                      </span>
+              if (!industry) {
+                // Trending Celebrities - Premium Clean Image Card (Site match)
+                cardStyle = "w-[130px] md:w-[145px] lg:w-[155px] shrink-0 bg-white rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_30px_rgba(225,29,72,0.12)] text-center hover:-translate-y-2 transition-all duration-500 group no-underline text-inherit block overflow-hidden border border-gray-100";
+                imgContainerStyle = "relative w-full aspect-[4/5] overflow-hidden bg-slate-100";
+                infoStyle = "p-3 bg-white";
+                badgeStyle = "bg-red-50 text-red-600 text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-wider inline-block border border-red-100";
+                nameStyle = "font-black text-[13px] md:text-[14px] mb-1 text-slate-800 group-hover:text-red-600 transition-colors line-clamp-1 tracking-tight";
+                imgClass = "absolute inset-0 w-full h-full object-cover object-[center_top] transition-transform duration-700 group-hover:scale-110";
+              } else if (industry === 'Hollywood') {
+                // Hollywood - Premium Square Style with Blue Accents
+                cardStyle = "w-[220px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm text-center hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 group no-underline text-inherit block overflow-hidden";
+                imgContainerStyle = "relative w-full pt-[100%] overflow-hidden bg-slate-200";
+                infoStyle = "p-4 border-b-[3px] border-transparent group-hover:border-blue-600 transition-colors bg-white";
+                badgeStyle = "bg-blue-600 text-white text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-wider inline-block shadow-sm";
+                nameStyle = "font-black text-[14px] mb-1 group-hover:text-blue-600 transition-colors line-clamp-1 tracking-tight";
+              }
+
+              return (
+                <Link href={`/celebrities/${celeb.slug || celeb._id}`} key={`${celeb._id}-${idx}`} className={cardStyle}>
+                  <div className={imgContainerStyle}>
+                    <img 
+                      src={celeb.image} 
+                      alt={celeb.name} 
+                      loading="lazy"
+                      className={imgClass}
+                    />
+                    {!industry && (
+                      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm text-slate-800 text-[10px] font-black px-2 py-1 rounded-md shadow-sm border border-white/50 flex items-center gap-1">
+                        <i className="fas fa-users text-red-500 text-[8px]"></i> {formattedFollowers}
+                      </div>
+                    )}
                   </div>
-                </div>
-              </Link>
-            );
-          })}
+                  <div className={infoStyle}>
+                    <div className={nameStyle}>{celeb.name}</div>
+                    <div className="flex justify-center mt-1">
+                        <span className={badgeStyle}>
+                            {celeb.category || celeb.role}
+                        </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
