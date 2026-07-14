@@ -181,6 +181,7 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
                       src={celeb.image} 
                       alt={celeb.name} 
                       loading="lazy"
+                      onError={(e) => { e.target.src = '/placeholder-user.png' }}
                       className={imgClass}
                     />
                     {!industry && (

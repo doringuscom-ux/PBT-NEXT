@@ -144,6 +144,7 @@ export default function CompactSongsSlider() {
                               <img 
                                   src={highResImage} 
                                   alt={item.trackName}
+                                  loading="lazy"
                                   className={`w-full h-full object-cover transition-transform duration-700 ${isPlaying ? 'scale-110' : 'group-hover:scale-110'}`}
                               />
                               {/* Dark overlay for text readability */}

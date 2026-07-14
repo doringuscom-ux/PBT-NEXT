@@ -27,7 +27,29 @@ export const DataProvider = ({ children }) => {
 
   const fetchData = async () => {
     console.log("STARTING FETCH DATA");
-    setIsLoading(true);
+    
+    // 1. FAST BOOT: Check local cache first to instantly show the website
+    let hasCache = false;
+    try {
+      const cachedData = localStorage.getItem('pbt_cached_data');
+      if (cachedData) {
+        const parsedCache = JSON.parse(cachedData);
+        if (parsedCache.movies) setMovies(parsedCache.movies);
+        if (parsedCache.news) setNews(parsedCache.news);
+        if (parsedCache.todayNews) setTodayNews(parsedCache.todayNews);
+        if (parsedCache.celebs) setCelebs(parsedCache.celebs);
+        if (parsedCache.videos) setVideos(parsedCache.videos);
+        if (parsedCache.announcements) setAnnouncements(parsedCache.announcements);
+        setIsLoading(false); // Instantly hide loading screen!
+        hasCache = true;
+        console.log("Loaded from local cache instantly!");
+      }
+    } catch (e) {}
+
+    if (!hasCache) {
+      setIsLoading(true);
+    }
+    
     setLoadingProgress(0);
     const totalRequests = 7;
     let completed = 0;
@@ -69,12 +91,31 @@ export const DataProvider = ({ children }) => {
 
       const [meRes, moviesRes, newsRes, todayNewsRes, celebsRes, videosRes, annRes] = results;
 
-      setMovies(((moviesRes && moviesRes.data) ? (Array.isArray(moviesRes.data) ? moviesRes.data : moviesRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.year) - new Date(a.createdAt || a.year)));
-      setNews(((newsRes && newsRes.data) ? (Array.isArray(newsRes.data) ? newsRes.data : newsRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
-      setTodayNews(((todayNewsRes && todayNewsRes.data) ? (Array.isArray(todayNewsRes.data) ? todayNewsRes.data : todayNewsRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)));
-      setCelebs((celebsRes && celebsRes.data) ? (Array.isArray(celebsRes.data) ? celebsRes.data : celebsRes.data.data || []) : []); 
-      setVideos((videosRes && videosRes.data) ? (Array.isArray(videosRes.data) ? videosRes.data : videosRes.data.data || []) : []);
-      setAnnouncements((annRes && annRes.data) ? (Array.isArray(annRes.data) ? annRes.data : annRes.data.data || []) : []);
+      const newMovies = ((moviesRes && moviesRes.data) ? (Array.isArray(moviesRes.data) ? moviesRes.data : moviesRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.year) - new Date(a.createdAt || a.year));
+      const newNews = ((newsRes && newsRes.data) ? (Array.isArray(newsRes.data) ? newsRes.data : newsRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
+      const newTodayNews = ((todayNewsRes && todayNewsRes.data) ? (Array.isArray(todayNewsRes.data) ? todayNewsRes.data : todayNewsRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
+      const newCelebs = (celebsRes && celebsRes.data) ? (Array.isArray(celebsRes.data) ? celebsRes.data : celebsRes.data.data || []) : []; 
+      const newVideos = (videosRes && videosRes.data) ? (Array.isArray(videosRes.data) ? videosRes.data : videosRes.data.data || []) : [];
+      const newAnnouncements = (annRes && annRes.data) ? (Array.isArray(annRes.data) ? annRes.data : annRes.data.data || []) : [];
+
+      setMovies(newMovies);
+      setNews(newNews);
+      setTodayNews(newTodayNews);
+      setCelebs(newCelebs);
+      setVideos(newVideos);
+      setAnnouncements(newAnnouncements);
+
+      // Save fresh data to cache for next time
+      try {
+        localStorage.setItem('pbt_cached_data', JSON.stringify({
+          movies: newMovies,
+          news: newNews,
+          todayNews: newTodayNews,
+          celebs: newCelebs,
+          videos: newVideos,
+          announcements: newAnnouncements
+        }));
+      } catch (e) {}
     } catch (err) {
       console.error("Error fetching data:", err);
     } finally {
