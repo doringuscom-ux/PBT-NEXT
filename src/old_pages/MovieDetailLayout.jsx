@@ -221,7 +221,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                         <button 
                             onClick={() => {
                                 if (movie.watchNowUrl) {
-                                    if (movie.isWatchNowRedirect) {
+                                    if (movie.watchNowAction === 'Redirect to Link' || movie.isWatchNowRedirect) {
                                         window.open(movie.watchNowUrl, '_blank');
                                     } else {
                                         setShowFullPlayer(true);
@@ -484,7 +484,17 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                             {/* Action Buttons (Desktop Only) */}
                             <div className="hidden md:flex flex-wrap items-center justify-start gap-4 px-0 mt-8">
                                 <button 
-                                    onClick={() => (movie.trailerUrl || movie.trailerVideo) && setShowFullPlayer(true)}
+                                    onClick={() => {
+                                        if (movie.watchNowUrl) {
+                                            if (movie.watchNowAction === 'Redirect to Link' || movie.isWatchNowRedirect) {
+                                                window.open(movie.watchNowUrl, '_blank');
+                                            } else {
+                                                setShowFullPlayer(true);
+                                            }
+                                        } else if (movie.trailerUrl || movie.trailerVideo) {
+                                            setShowFullPlayer(true);
+                                        }
+                                    }}
                                     className="bg-yellow-400 hover:bg-yellow-500 text-black px-10 py-4 rounded-full font-black uppercase tracking-widest flex items-center gap-3 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-yellow-400/20 group"
                                 >
                                     <i className="fas fa-play text-lg group-hover:animate-pulse"></i>

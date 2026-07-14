@@ -56,7 +56,7 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
     return bFollowers - aFollowers;
   });
 
-  const displayedCelebs = sortedCelebs.slice(0, 8);
+  const displayedCelebs = sortedCelebs.slice(0, !industry ? 5 : 8);
 
   const sliderRef = useRef(null);
 
@@ -108,7 +108,7 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
   };
 
   return (
-    <div className="mb-12 overflow-hidden relative px-4 lg:px-20 xl:px-32 2xl:px-48">
+    <div className="mt-0 mb-4 overflow-hidden relative px-4 lg:px-20 xl:px-32 2xl:px-48">
       <div className="w-full">
         <div className="flex justify-between items-center mb-6 border-b pb-3 border-gray-100">
           <div className="flex items-center gap-3">
@@ -129,14 +129,11 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
           </Link>
         </div>
         
-        <div className="celeb-marquee-container relative w-full overflow-hidden py-4">
-          {/* Gradient Masks for smooth fading edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none hidden lg:block bg-gradient-to-r from-white to-transparent"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none hidden lg:block bg-gradient-to-l from-white to-transparent"></div>
+        <div className="celeb-marquee-container relative w-full overflow-hidden py-2">
           
           <div 
             ref={sliderRef}
-            className="flex overflow-x-auto gap-4 lg:gap-5 px-2 no-scrollbar pb-6 pt-2"
+            className={`flex overflow-x-auto ${!industry ? 'gap-4 lg:gap-6' : 'gap-4 lg:gap-5'} px-2 no-scrollbar pb-6 pt-2`}
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
@@ -162,12 +159,12 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
 
               if (!industry) {
                 // Trending Celebrities - Premium Clean Image Card (Site match)
-                cardStyle = "w-[130px] md:w-[145px] lg:w-[155px] shrink-0 bg-white rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_30px_rgba(225,29,72,0.12)] text-center hover:-translate-y-2 transition-all duration-500 group no-underline text-inherit block overflow-hidden border border-gray-100";
-                imgContainerStyle = "relative w-full aspect-[4/5] overflow-hidden bg-slate-100";
-                infoStyle = "p-3 bg-white";
+                cardStyle = "group no-underline flex flex-col shrink-0 w-[calc(50%-8px)] sm:w-[calc(33.333%-11px)] md:w-[calc(25%-12px)] lg:w-[calc(20%-19px)] bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-xl text-center hover:-translate-y-2 transition-all duration-500 overflow-hidden border border-gray-100";
+                imgContainerStyle = "relative w-full aspect-[4/5] sm:aspect-[4/5] md:aspect-[3/4] overflow-hidden bg-slate-100";
+                infoStyle = "p-3 bg-white flex flex-col items-center";
                 badgeStyle = "bg-red-50 text-red-600 text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-wider inline-block border border-red-100";
-                nameStyle = "font-black text-[13px] md:text-[14px] mb-1 text-slate-800 group-hover:text-red-600 transition-colors line-clamp-1 tracking-tight";
-                imgClass = "absolute inset-0 w-full h-full object-cover object-[center_top] transition-transform duration-700 group-hover:scale-110";
+                nameStyle = "font-black text-[13px] md:text-[15px] mb-1 text-slate-800 group-hover:text-red-600 transition-colors line-clamp-1 tracking-tight";
+                imgClass = "absolute inset-0 w-full h-full object-cover object-[center_top] transition-transform duration-700 group-hover:scale-105";
               } else if (industry === 'Hollywood') {
                 // Hollywood - Premium Square Style with Blue Accents
                 cardStyle = "w-[220px] shrink-0 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm text-center hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 group no-underline text-inherit block overflow-hidden";

@@ -32,7 +32,8 @@ const ManageMovies = () => {
     performance: { 
         budget: '', day1: '', weekend: '', week1: '', indiaNet: '', indiaGross: '', overseas: '', worldwide: '', verdict: '', screens: '', status: 'Released' 
     }, industry: 'Bollywood',
-    fullStory: '', trailerUrl: '', trailerVideo: null, likes: 0, releaseDate: new Date().toISOString().split('T')[0], cast: [], slug: '', photos: [], youtubeLinks: []
+    fullStory: '', trailerUrl: '', trailerVideo: null, likes: 0, releaseDate: new Date().toISOString().split('T')[0], cast: [], slug: '', photos: [], youtubeLinks: [],
+    watchNowUrl: '', watchNowAction: 'Play in Trailer Popup'
   });
 
   const [showForm, setShowForm] = useState(false);
@@ -113,7 +114,8 @@ const ManageMovies = () => {
       title: '', image: '', coverImage: '', rating: '', genre: '', year: new Date().getFullYear().toString(), 
       overview: '', director: '', runtime: '', certification: '', 
       performance: { budget: '', day1: '', weekend: '', week1: '', indiaNet: '', indiaGross: '', overseas: '', worldwide: '', verdict: '', screens: '', status: 'Released' }, industry: 'Bollywood',
-      fullStory: '', trailerUrl: '', trailerVideo: null, likes: 0, releaseDate: new Date().toISOString().split('T')[0], cast: [], slug: '', photos: [], youtubeLinks: []
+      fullStory: '', trailerUrl: '', trailerVideo: null, likes: 0, releaseDate: new Date().toISOString().split('T')[0], cast: [], slug: '', photos: [], youtubeLinks: [],
+      watchNowUrl: '', watchNowAction: 'Play in Trailer Popup'
     });
     setSelectedFile(null);
     setImageSource('url');
@@ -135,7 +137,9 @@ const ManageMovies = () => {
       photos: Array.isArray(movie.photos) ? movie.photos : (typeof movie.photos === 'string' ? JSON.parse(movie.photos) : []),
       coverImage: movie.coverImage || '',
       trailerVideo: movie.trailerVideo?._id || movie.trailerVideo || null,
-      youtubeLinks: Array.isArray(movie.youtubeLinks) ? movie.youtubeLinks : []
+      youtubeLinks: Array.isArray(movie.youtubeLinks) ? movie.youtubeLinks : [],
+      watchNowUrl: movie.watchNowUrl || '',
+      watchNowAction: movie.watchNowAction || 'Play in Trailer Popup'
     });
     setIsCustomIndustry(movie.industry && !INDUSTRIES.includes(movie.industry));
     setShowForm(true);
@@ -375,6 +379,33 @@ const ManageMovies = () => {
                     {trailerSource === 'file' && (
                         <input type="file" accept="video/*" onChange={e => setTrailerFile(e.target.files[0])} className="w-full text-xs p-2 border rounded-xl bg-slate-50" />
                     )}
+                </div>
+
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Watch Now Button Action</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Action URL</label>
+                            <input 
+                                placeholder="https://youtube.com/... or https://other-site.com" 
+                                className="p-3 border rounded-xl outline-none text-sm bg-white" 
+                                value={formData.watchNowUrl || ''} 
+                                onChange={e => setFormData({...formData, watchNowUrl: e.target.value})} 
+                            />
+                            <p className="text-[9px] text-gray-400 font-medium ml-1">Leave URL blank to default to Trailer Video if available.</p>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Action Type</label>
+                            <select 
+                                className="p-3 border rounded-xl outline-none font-bold text-sm bg-white"
+                                value={formData.watchNowAction || 'Play in Trailer Popup'}
+                                onChange={e => setFormData({...formData, watchNowAction: e.target.value})}
+                            >
+                                <option value="Play in Trailer Popup">Play in Trailer Popup</option>
+                                <option value="Redirect to Link">Redirect to Link</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                     <div className="flex justify-between items-center mb-4">

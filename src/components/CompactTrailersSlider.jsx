@@ -57,18 +57,19 @@ export default function CompactTrailersSlider() {
     <div
       key={video._id}
       onClick={() => handleThumbnailClick(originalIndex)}
-      className="cursor-pointer group relative rounded-xl overflow-hidden border border-white/10 hover:border-white/40 transition-all bg-[#151825] flex flex-col hover:-translate-y-1 shadow-[0_4px_15px_rgba(0,0,0,0.5)] hover:shadow-[0_8px_25px_rgba(248,68,100,0.2)]"
+      className="cursor-pointer group relative rounded-lg md:rounded-xl overflow-hidden border border-white/10 hover:border-white/40 transition-all bg-[#151825] flex flex-col hover:-translate-y-1 shadow-md hover:shadow-xl"
     >
       <div className="aspect-video relative">
         <img src={video.thumbnail || video.image} alt={video.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#f84464] to-[#e62429] shadow-lg flex items-center justify-center text-white text-sm pl-0.5 transform scale-90 group-hover:scale-110 transition-transform">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-[#f84464] to-[#e62429] shadow-lg flex items-center justify-center text-white text-[10px] md:text-sm pl-0.5 transform scale-90 group-hover:scale-110 transition-transform">
                <i className="fas fa-play"></i>
             </div>
         </div>
       </div>
-      <div className="p-3">
-        <h4 className="text-white text-xs md:text-sm font-bold line-clamp-2 leading-snug group-hover:text-red-400 transition-colors">{video.title}</h4>
+      <div className="p-2 md:p-3 bg-gradient-to-t from-black/50 to-transparent">
+        <h4 className="text-white/90 text-[10px] sm:text-xs md:text-sm font-bold line-clamp-2 leading-tight group-hover:text-red-400 transition-colors">{video.title}</h4>
       </div>
     </div>
   );
@@ -132,13 +133,10 @@ export default function CompactTrailersSlider() {
            </div>
         </div>
 
-        {/* Mobile Thumbnails (Horizontal Scroll) */}
-        <div className="flex lg:hidden overflow-x-auto gap-4 mt-8 hide-scrollbar pb-2">
-            <style>{`
-              div::-webkit-scrollbar { display: none; }
-            `}</style>
+        {/* Mobile Thumbnails (Grid) */}
+        <div className="grid grid-cols-2 lg:hidden gap-3 sm:gap-4 mt-6">
             {sideVideoList.map((item) => (
-               <div key={item.video._id} className="min-w-[65%] sm:min-w-[45%] shrink-0">
+               <div key={item.video._id} className="w-full">
                   {renderThumbnail(item.video, item.index)}
                </div>
             ))}
