@@ -6,7 +6,7 @@ export const API_BASE_URL = isLocal
     ? (process.env.NEXT_PUBLIC_API_URL_LOCAL || 'https://pbt-iyjf.onrender.com/api').replace('/api', '')
     : (process.env.NEXT_PUBLIC_API_URL || 'https://pbt-iyjf.onrender.com/api').replace('/api', '');
 
-console.log('API BASE URL INITIALIZED AS:', `${API_BASE_URL}/api`); const api = axios.create({
+const api = axios.create({
     baseURL: `${API_BASE_URL}/api`,
     withCredentials: true,
     timeout: 60000 // 60 seconds timeout to allow Render free tier to wake up

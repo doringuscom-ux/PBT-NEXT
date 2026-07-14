@@ -26,7 +26,6 @@ export const DataProvider = ({ children }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
 
   const fetchData = async () => {
-    console.log("STARTING FETCH DATA");
     
     // 1. FAST BOOT: Check local cache first to instantly show the website
     let hasCache = false;
@@ -42,7 +41,6 @@ export const DataProvider = ({ children }) => {
         if (parsedCache.announcements) setAnnouncements(parsedCache.announcements);
         setIsLoading(false); // Instantly hide loading screen!
         hasCache = true;
-        console.log("Loaded from local cache instantly!");
       }
     } catch (e) {}
 
@@ -77,7 +75,6 @@ export const DataProvider = ({ children }) => {
     };
 
     try {
-      console.log("Starting all parallel requests");
       
       const results = await Promise.all([
           withTimeout(api.getMe(), 10000, 'auth/me').then(r => { if (r?.data?.success) setUser(r.data.user); return r; }).catch(e => { setUser(null); return null; }).finally(() => increment('auth/me')),
