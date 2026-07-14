@@ -13,10 +13,14 @@ export default function CompactSongsSlider() {
     // Fetch latest Punjabi trending songs from Apple iTunes API
     const fetchSongs = async () => {
       try {
-        const res = await fetch('https://itunes.apple.com/search?term=punjabi+latest&entity=song&limit=15&sort=recent');
+        // Fetch more songs to ensure we can sort and get the absolute newest ones
+        const res = await fetch('https://itunes.apple.com/search?term=punjabi&entity=song&limit=50');
         const data = await res.json();
         if (data && data.results) {
-          setSongs(data.results);
+          // Sort by release date descending (newest first)
+          const sortedSongs = data.results.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+          // Take the top 15 newest
+          setSongs(sortedSongs.slice(0, 15));
         }
       } catch (err) {
         console.error("Error fetching Apple Music data:", err);
