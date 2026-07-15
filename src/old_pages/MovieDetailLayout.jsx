@@ -1049,9 +1049,9 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                         {activeTab === 'Articles' && (
                             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
                                 <div className="flex items-center gap-4 mb-2">
-                                    <div className="h-10 w-1.5 bg-yellow-400 rounded-full"></div>
+                                    <div className="h-10 w-1.5 bg-primary-red rounded-full"></div>
                                     <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white md:text-slate-900 leading-none">
-                                        Related <span className="text-yellow-400">Articles</span>
+                                        Related <span className="text-primary-red">Articles</span>
                                     </h2>
                                 </div>
                                 
@@ -1066,7 +1066,7 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                                 <div className="aspect-video overflow-hidden relative">
                                                     <img src={article.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="" />
                                                     <div className="absolute top-4 left-4">
-                                                        <span className="bg-yellow-400 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
+                                                        <span className="bg-primary-red text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg">
                                                             {article.category}
                                                         </span>
                                                     </div>
@@ -1078,14 +1078,14 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                                             <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                                                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{article.author || 'Editor Team'}</span>
                                                         </div>
-                                                        <h3 className="text-xl font-black text-white group-hover:text-yellow-400 transition-colors leading-tight line-clamp-2">
+                                                        <h3 className="text-xl font-black text-slate-900 group-hover:text-primary-red transition-colors leading-tight line-clamp-2">
                                                             {article.title}
                                                         </h3>
                                                         <p className="mt-4 text-sm text-slate-500 line-clamp-3 font-medium leading-relaxed">
                                                             {article.excerpt}
                                                         </p>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white group-hover:gap-4 transition-all">
+                                                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary-red group-hover:gap-4 transition-all">
                                                         Read Full Article <i className="fas fa-arrow-right"></i>
                                                     </div>
                                                 </div>
