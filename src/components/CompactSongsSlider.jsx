@@ -14,7 +14,7 @@ export default function CompactSongsSlider() {
     const fetchSongs = async () => {
       try {
         // Fetch more songs to ensure we can sort and get the absolute newest ones
-        const res = await fetch('https://itunes.apple.com/search?term=punjabi&entity=song&limit=50');
+        const res = await fetch('/api/itunes?term=punjabi&entity=song&limit=50');
         const data = await res.json();
         if (data && data.results) {
           // Sort by release date descending (newest first)

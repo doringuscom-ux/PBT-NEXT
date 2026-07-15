@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  async rewrites() {
+    return [
+      {
+        source: '/api/itunes',
+        destination: 'https://itunes.apple.com/search',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

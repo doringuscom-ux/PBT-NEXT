@@ -40,3 +40,5 @@ export default function Page() {
         </MainLayout>
     );
 }
+
+export const revalidate = 0;

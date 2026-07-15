@@ -31,3 +31,5 @@ export async function generateMetadata() {
 export default function Home() {
     return <HomeClient />;
 }
+
+export const revalidate = 0;

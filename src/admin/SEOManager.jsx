@@ -19,7 +19,8 @@ const SEOManager = () => {
     const handleAutoGenerate = async () => {
         setIsGenerating(true);
         try {
-            const res = await api.post('/seo/auto-generate');
+            // Increased timeout to 5 minutes (300000ms) because generating SEO for all records can take a long time
+            const res = await api.post('/seo/auto-generate', {}, { timeout: 300000 });
             alert(res.data.message);
             fetchEntries();
             fetchStats();

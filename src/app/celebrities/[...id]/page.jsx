@@ -46,3 +46,5 @@ export default async function Page() {
         </MainLayout>
     );
 }
+
+export const revalidate = 0;
