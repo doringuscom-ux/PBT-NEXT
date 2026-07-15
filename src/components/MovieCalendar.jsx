@@ -23,7 +23,7 @@ const MovieCalendar = () => {
   };
 
   return (
-    <div className="my-4 px-4 lg:px-20 xl:px-32 2xl:px-48">
+    <div className="px-4 lg:px-20 xl:px-32 2xl:px-48">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">

@@ -38,8 +38,11 @@ const ImageCropperModal = ({ isOpen, onClose, imageSrc, onCropComplete, aspect =
         const scaleX = image.naturalWidth / image.width;
         const scaleY = image.naturalHeight / image.height;
         
-        canvas.width = completedCrop.width;
-        canvas.height = completedCrop.height;
+        const targetWidth = Math.floor(completedCrop.width * scaleX);
+        const targetHeight = Math.floor(completedCrop.height * scaleY);
+        
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
         const ctx = canvas.getContext('2d');
 
         ctx.drawImage(
@@ -50,8 +53,8 @@ const ImageCropperModal = ({ isOpen, onClose, imageSrc, onCropComplete, aspect =
             completedCrop.height * scaleY,
             0,
             0,
-            completedCrop.width,
-            completedCrop.height
+            targetWidth,
+            targetHeight
         );
 
         return new Promise((resolve) => {

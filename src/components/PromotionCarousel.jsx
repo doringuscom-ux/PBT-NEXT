@@ -9,6 +9,27 @@ const PromotionCarousel = () => {
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const carouselRef = useRef(null);
+    
+    // Swipe states
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        if (distance > minSwipeDistance) handleNext();
+        if (distance < -minSwipeDistance) handlePrev();
+    };
 
     useEffect(() => {
         const fetchPromotions = async () => {
@@ -81,19 +102,22 @@ const PromotionCarousel = () => {
     return (
         <>
             <style>{`
-            .promo-aspect-box { aspect-ratio: 16 / 7; }
+            .promo-aspect-box { aspect-ratio: 16 / 9; }
             @media (min-width: 768px) {
-                .promo-aspect-box { aspect-ratio: 4 / 1; }
+                .promo-aspect-box { aspect-ratio: 21 / 9; }
             }
             @media (min-width: 1024px) {
-                .promo-aspect-box { aspect-ratio: 1240 / 220; }
+                .promo-aspect-box { aspect-ratio: 4 / 1; }
             }
         `}</style>
             <div
-                className="relative w-full overflow-hidden group py-2 md:py-4 mb-4"
+                className="relative w-full overflow-hidden group py-2 md:py-4 mb-4 touch-pan-y"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
             >
-                {/* Dummy element to dictate perfect height based on 80% width */}
-                <div className="w-[80%] mx-auto promo-aspect-box opacity-0 pointer-events-none"></div>
+                {/* Dummy element to dictate perfect height based on 75% width */}
+                <div className="w-full px-2 lg:px-0 lg:w-[65%] mx-auto promo-aspect-box opacity-0 pointer-events-none"></div>
 
                 {/* Carousel Track - Absolute positioned slides */}
                 <div className="absolute inset-0 flex items-center justify-center py-2 md:py-4">
@@ -118,19 +142,18 @@ const PromotionCarousel = () => {
                         return (
                             <div
                                 key={`${promo._id || idx}-${idx}`}
-                                className="absolute top-2 bottom-2 md:top-4 md:bottom-4 left-0 right-0 mx-auto w-[80%] px-0.5 md:px-1 flex-shrink-0"
+                                className="absolute top-2 bottom-2 lg:top-4 lg:bottom-4 left-0 right-0 mx-auto w-full px-2 lg:w-[65%] lg:px-1 flex-shrink-0"
                                 style={{
                                     transform: `translateX(${offset * 100}%)`,
                                     transitionDuration: isTransitioning ? '700ms' : '0ms',
                                     zIndex: isActive ? 20 : 10,
                                 }}
                             >
-                                {/* Inner container with rounded corners and conditional scaling */}
                                 <div
-                                    className={`w-full h-full relative rounded-xl overflow-hidden transition-all duration-700 ease-out ${isVisualActive ? 'scale-100 opacity-100 shadow-xl' : 'scale-[0.99] opacity-70'}`}
+                                    className={`w-full h-full relative rounded-xl overflow-hidden transition-all duration-700 ease-out bg-slate-900 ${isVisualActive ? 'scale-100 opacity-100 shadow-xl' : 'scale-[0.99] opacity-70'}`}
                                 >
                                     {promo.link ? (
-                                        <Link href={promo.link} className="block w-full h-full">
+                                        <Link href={promo.link} className="block w-full h-full group/promo">
                                             <picture>
                                                 {promo.mobileImage && <source media="(max-width: 639px)" srcSet={promo.mobileImage} />}
                                                 {promo.tabletImage && <source media="(max-width: 1023px)" srcSet={promo.tabletImage} />}

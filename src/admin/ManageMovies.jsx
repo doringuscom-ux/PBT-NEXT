@@ -8,6 +8,7 @@ import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { useData } from '../context/DataContext';
 import Modal from '../components/Modal';
+import ImageCropperModal from '../components/ImageCropperModal';
 import { slugify } from '../utils/slugify';
 
 const INDUSTRIES = ["Bollywood", "Hollywood", "Tollywood", "Kollywood", "Mollywood", "Sandalwood", "South Indian", "Haryanvi", "Bhojpuri", "Pollywood"];
@@ -40,6 +41,13 @@ const ManageMovies = () => {
   const [activeFormTab, setActiveFormTab] = useState('Info'); 
   const [imageSource, setImageSource] = useState('url'); 
   const [selectedFile, setSelectedFile] = useState(null);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [croppedPosterUrl, setCroppedPosterUrl] = useState(null);
+  const [coverImageSource, setCoverImageSource] = useState('url');
+  const [selectedCoverFile, setSelectedCoverFile] = useState(null);
+  const [croppedCoverUrl, setCroppedCoverUrl] = useState(null);
+  const [selectedPhotos, setSelectedPhotos] = useState([]);
+  const [cropType, setCropType] = useState('poster');
   const [trailerSource, setTrailerSource] = useState('url');
   const [trailerFile, setTrailerFile] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,6 +69,33 @@ const ManageMovies = () => {
     const isExplicitlyReleased = m.performance?.status === 'Released' || m.performance?.status === 'Blockbuster' || m.performance?.status === 'Hit';
     return isConfirmedPast || isExplicitlyReleased;
   });
+
+  const handleFileChange = (e, type) => {
+      if (e.target.files && e.target.files.length > 0) {
+          const file = e.target.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+              setImageSrc(reader.result);
+              setCropType(type);
+          };
+          e.target.value = null;
+      }
+  };
+
+  const handleCropComplete = (croppedFile) => {
+      const objectUrl = URL.createObjectURL(croppedFile);
+      if (cropType === 'poster') {
+          setSelectedFile(croppedFile);
+          setCroppedPosterUrl(objectUrl);
+      } else if (cropType === 'cover') {
+          setSelectedCoverFile(croppedFile);
+          setCroppedCoverUrl(objectUrl);
+      } else if (cropType === 'gallery') {
+          setSelectedPhotos([...selectedPhotos, { file: croppedFile, previewUrl: objectUrl }]);
+      }
+      setImageSrc(null);
+  };
 
   const filteredMovies = releasedMovies
     .filter(movie => 
@@ -84,6 +119,8 @@ const ManageMovies = () => {
                 data.append(key, JSON.stringify(formData[key]));
             } else if (key === 'image') {
                 if (imageSource === 'url') data.append('image', formData[key]);
+            } else if (key === 'coverImage') {
+                if (coverImageSource === 'url') data.append('coverImage', formData[key]);
             } else if (key === 'trailerUrl') {
                 if (trailerSource === 'url' || trailerSource === 'link') {
                     data.append('trailerUrl', formData[key]);
@@ -97,9 +134,15 @@ const ManageMovies = () => {
     if (imageSource === 'file' && selectedFile) {
         data.append('image', selectedFile);
     }
+    if (coverImageSource === 'file' && selectedCoverFile) {
+        data.append('coverImage', selectedCoverFile);
+    }
     if (trailerSource === 'file' && trailerFile) {
         data.append('trailer', trailerFile);
     }
+    selectedPhotos.forEach(p => {
+        data.append('photosFiles', p.file);
+    });
 
     if (editingIndex !== null) {
       await updateMovie(releasedMovies[editingIndex]._id, data);
@@ -118,7 +161,13 @@ const ManageMovies = () => {
       watchNowUrl: '', watchNowAction: 'Play in Trailer Popup'
     });
     setSelectedFile(null);
+    setCroppedPosterUrl(null);
     setImageSource('url');
+    setSelectedCoverFile(null);
+    setCroppedCoverUrl(null);
+    setCoverImageSource('url');
+    setSelectedPhotos([]);
+    setImageSrc(null);
     setTrailerFile(null);
     setTrailerSource('url');
     setShowForm(false);
@@ -208,7 +257,7 @@ const ManageMovies = () => {
                     <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Title</label>
                     <input 
                         placeholder="Movie Title" className="p-3 border rounded-xl focus:ring-2 focus:ring-primary-red/20 outline-none font-bold" required
-                        value={formData.title} 
+                        value={formData.title || ''} 
                         onChange={e => {
                             const newTitle = e.target.value;
                             const newSlug = formData.industry ? `${slugify(formData.industry)}/${slugify(newTitle)}` : slugify(newTitle);
@@ -225,26 +274,26 @@ const ManageMovies = () => {
                     <label className="text-[10px] font-black uppercase text-gray-400 ml-1">URL Slug</label>
                     <input 
                         placeholder="slug-name-here" className="p-3 border rounded-xl bg-yellow-50 focus:ring-2 focus:ring-primary-red/20 outline-none font-bold italic"
-                        value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})}
+                        value={formData.slug || ''} onChange={e => setFormData({...formData, slug: e.target.value})}
                     />
                 </div>
                 <input 
                     placeholder="Genre" className="p-3 border rounded-xl outline-none" required
-                    value={formData.genre} onChange={e => setFormData({...formData, genre: e.target.value})}
+                    value={formData.genre || ''} onChange={e => setFormData({...formData, genre: e.target.value})}
                 />
                 <div className="grid grid-cols-2 gap-2">
                     <input 
                         placeholder="Year" className="p-3 border rounded-xl outline-none" required type="number"
-                        value={formData.year} onChange={e => setFormData({...formData, year: e.target.value})}
+                        value={formData.year || ''} onChange={e => setFormData({...formData, year: e.target.value})}
                     />
                     <input 
                         placeholder="Rating" className="p-3 border rounded-xl outline-none" type="number" step="0.1" required
-                        value={formData.rating} onChange={e => setFormData({...formData, rating: e.target.value})}
+                        value={formData.rating || ''} onChange={e => setFormData({...formData, rating: e.target.value})}
                     />
                 </div>
                 <select 
                     className="p-3 border rounded-xl outline-none font-bold text-sm"
-                    value={isCustomIndustry ? 'Custom' : formData.industry} 
+                    value={isCustomIndustry ? 'Custom' : (formData.industry || '')} 
                     onChange={e => {
                         const newInd = e.target.value;
                         if (newInd === 'Custom') { 
@@ -267,11 +316,11 @@ const ManageMovies = () => {
                     <option value="Custom">Custom...</option>
                 </select>
                 {isCustomIndustry && (
-                    <input placeholder="Enter industry..." className="p-2 border rounded-lg mt-1 outline-none px-3" value={formData.industry} onChange={e => setFormData({...formData, industry: e.target.value})} />
+                    <input placeholder="Enter industry..." className="p-2 border rounded-lg mt-1 outline-none px-3" value={formData.industry || ''} onChange={e => setFormData({...formData, industry: e.target.value})} />
                 )}
-                <input placeholder="Director" className="p-3 border rounded-xl" value={formData.director} onChange={e => setFormData({...formData, director: e.target.value})} />
-                <input placeholder="Runtime" className="p-3 border rounded-xl" value={formData.runtime} onChange={e => setFormData({...formData, runtime: e.target.value})} />
-                <input placeholder="Certification" className="p-3 border rounded-xl" value={formData.certification} onChange={e => setFormData({...formData, certification: e.target.value})} />
+                <input placeholder="Director" className="p-3 border rounded-xl" value={formData.director || ''} onChange={e => setFormData({...formData, director: e.target.value})} />
+                <input placeholder="Runtime" className="p-3 border rounded-xl" value={formData.runtime || ''} onChange={e => setFormData({...formData, runtime: e.target.value})} />
+                <input placeholder="Certification" className="p-3 border rounded-xl" value={formData.certification || ''} onChange={e => setFormData({...formData, certification: e.target.value})} />
             </div>
           )}
 
@@ -279,13 +328,13 @@ const ManageMovies = () => {
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                 <textarea 
                     placeholder="Synopsis" className="p-3 border rounded-xl w-full min-h-[100px] outline-none"
-                    value={formData.overview} onChange={e => setFormData({...formData, overview: e.target.value})}
+                    value={formData.overview || ''} onChange={e => setFormData({...formData, overview: e.target.value})}
                 />
                 <div className="flex flex-col gap-1">
                     <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Full Article / Highlights</label>
                     <ReactQuill 
                         theme="snow"
-                        value={formData.fullStory}
+                        value={formData.fullStory || ''}
                         onChange={val => setFormData({...formData, fullStory: val})}
                         modules={quillModules}
                         className="bg-white rounded-xl border overflow-hidden"
@@ -303,14 +352,38 @@ const ManageMovies = () => {
                         <button type="button" onClick={() => setImageSource('file')} className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest ${imageSource === 'file' ? 'bg-primary-red text-white' : 'bg-gray-100 text-gray-500'}`}>Upload</button>
                     </div>
                     {imageSource === 'url' ? (
-                        <input placeholder="Poster URL" className="p-3 border rounded-xl w-full" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} />
+                        <input placeholder="Poster URL" className="p-3 border rounded-xl w-full" value={formData.image || ''} onChange={e => setFormData({...formData, image: e.target.value})} />
                     ) : (
-                        <input type="file" onChange={e => setSelectedFile(e.target.files[0])} className="w-full text-xs" />
+                        <div>
+                            <input type="file" onChange={e => handleFileChange(e, 'poster')} className="w-full text-xs mb-2" accept="image/*" />
+                            {croppedPosterUrl && (
+                                <div className="mt-2 border rounded p-2 bg-gray-50 text-center">
+                                    <span className="text-green-600 font-bold text-sm block mb-2">Cropped Preview:</span>
+                                    <img src={croppedPosterUrl} alt="Preview" className="w-auto h-32 object-contain mx-auto rounded border" />
+                                </div>
+                            )}
+                        </div>
                     )}
                 </div>
-                <div className="flex flex-col gap-1">
-                    <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Cover Image (16:9)</label>
-                    <input placeholder="Cover Image URL" className="p-3 border rounded-xl" value={formData.coverImage} onChange={e => setFormData({...formData, coverImage: e.target.value})} />
+                <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase text-gray-400 ml-1">Cover Image (21:9 - Cinematic Wide)</label>
+                    <div className="flex gap-2">
+                        <button type="button" onClick={() => setCoverImageSource('url')} className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest ${coverImageSource === 'url' ? 'bg-primary-red text-white' : 'bg-gray-100 text-gray-500'}`}>URL</button>
+                        <button type="button" onClick={() => setCoverImageSource('file')} className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest ${coverImageSource === 'file' ? 'bg-primary-red text-white' : 'bg-gray-100 text-gray-500'}`}>Upload</button>
+                    </div>
+                    {coverImageSource === 'url' ? (
+                        <input placeholder="Cover Image URL" className="p-3 border rounded-xl w-full" value={formData.coverImage || ''} onChange={e => setFormData({...formData, coverImage: e.target.value})} />
+                    ) : (
+                        <div>
+                            <input type="file" onChange={e => handleFileChange(e, 'cover')} className="w-full text-xs mb-2" accept="image/*" />
+                            {croppedCoverUrl && (
+                                <div className="mt-2 border rounded p-2 bg-gray-50 text-center">
+                                    <span className="text-green-600 font-bold text-sm block mb-2">Cropped Preview:</span>
+                                    <img src={croppedCoverUrl} alt="Preview" className="w-auto h-32 object-contain mx-auto rounded border" />
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
                 
                 <div className="space-y-3">
@@ -374,7 +447,7 @@ const ManageMovies = () => {
                     )}
 
                     {trailerSource === 'url' && (
-                        <input placeholder="Trailer/YouTube URL" className="p-3 border rounded-xl w-full font-bold text-sm bg-slate-50" value={formData.trailerUrl} onChange={e => setFormData({...formData, trailerUrl: e.target.value})} />
+                        <input placeholder="Trailer/YouTube URL" className="p-3 border rounded-xl w-full font-bold text-sm bg-slate-50" value={formData.trailerUrl || ''} onChange={e => setFormData({...formData, trailerUrl: e.target.value})} />
                     )}
                     {trailerSource === 'file' && (
                         <input type="file" accept="video/*" onChange={e => setTrailerFile(e.target.files[0])} className="w-full text-xs p-2 border rounded-xl bg-slate-50" />
@@ -433,15 +506,39 @@ const ManageMovies = () => {
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
                     <div className="flex justify-between items-center mb-4">
                         <label className="text-[10px] font-black uppercase text-gray-400">Photos Gallery</label>
-                        <button type="button" onClick={() => setFormData({...formData, photos: [...formData.photos, '']})} className="bg-slate-800 text-white p-2 rounded-lg text-xs"><i className="fas fa-plus"></i></button>
+                        <div className="flex gap-2">
+                            <button type="button" onClick={() => setFormData({...formData, photos: [...(formData.photos || []), '']})} className="bg-slate-800 hover:bg-slate-700 text-white px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 transition-colors">
+                                <i className="fas fa-link"></i> Add URL
+                            </button>
+                            <label className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors m-0">
+                                <i className="fas fa-upload"></i> Upload
+                                <input type="file" onChange={e => handleFileChange(e, 'gallery')} className="hidden" accept="image/*" />
+                            </label>
+                        </div>
                     </div>
                     <div className="space-y-3">
                         {formData.photos?.map((photo, pIdx) => (
                             <div key={pIdx} className="flex gap-2">
                                 <input placeholder="Photo URL" className="flex-1 p-2 border rounded-lg text-xs" value={photo} onChange={e => { const nP = [...formData.photos]; nP[pIdx] = e.target.value; setFormData({...formData, photos: nP}); }} />
-                                <button type="button" onClick={() => setFormData({...formData, photos: formData.photos.filter((_, i) => i !== pIdx)})} className="text-red-500 p-2"><i className="fas fa-trash"></i></button>
+                                <button type="button" onClick={() => setFormData({...formData, photos: formData.photos.filter((_, i) => i !== pIdx)})} className="text-red-500 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition-colors"><i className="fas fa-trash"></i></button>
                             </div>
                         ))}
+                        
+                        {/* Uploaded Photos Preview */}
+                        {selectedPhotos.length > 0 && (
+                            <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                                {selectedPhotos.map((photoObj, idx) => (
+                                    <div key={`upload-${idx}`} className="relative group rounded-xl overflow-hidden border border-gray-200 shadow-sm aspect-video">
+                                        <img src={photoObj.previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <button type="button" onClick={() => setSelectedPhotos(selectedPhotos.filter((_, i) => i !== idx))} className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600">
+                                                <i className="fas fa-trash text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -694,6 +791,16 @@ const ManageMovies = () => {
           </tbody>
         </table>
       </div>
+
+      {imageSrc && (
+        <ImageCropperModal
+            isOpen={!!imageSrc}
+            onClose={() => setImageSrc(null)}
+            imageSrc={imageSrc}
+            aspect={cropType === 'poster' ? 2 / 3 : (cropType === 'cover' ? 21 / 9 : 16 / 9)}
+            onCropComplete={handleCropComplete}
+        />
+      )}
     </div>
   );
 };

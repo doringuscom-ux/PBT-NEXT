@@ -47,19 +47,15 @@ export default function HomeClient() {
 
 
           {/* Compact Sliders Row */}
-          <div className="flex flex-col">
+          <div className="flex flex-col space-y-8 lg:space-y-12 mt-8 lg:mt-12">
             <MovieCalendar />
             <CompactTrailersSlider />
             <CompactMoviesSlider />
             <CompactNewsSlider />
             <CompactCelebSlider />
-
-            <div className="space-y-12">
-              <NewsGrid />
-              <CompactSongsSlider />
-              <CelebGrid />
-            </div>
-
+            <NewsGrid />
+            <CompactSongsSlider />
+            <CelebGrid />
           </div>
 
 

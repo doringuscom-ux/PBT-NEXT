@@ -30,7 +30,7 @@ export default function CompactMoviesSlider() {
   };
 
   return (
-    <div className="mt-0 mb-4 px-4 lg:px-20 xl:px-32 2xl:px-48">
+    <div className="px-4 lg:px-20 xl:px-32 2xl:px-48">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
@@ -76,13 +76,13 @@ export default function CompactMoviesSlider() {
                     alt={movie.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  {/* Bottom Overlay - Rating/Votes */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-[#000000e6] px-3 py-2 flex items-center gap-2 text-white text-[11px] md:text-[13px]">
-                    <i className="fas fa-star text-[#f84464] text-[11px] md:text-[12px]"></i>
-                    <span className="font-medium tracking-wide">
+                  {/* Bottom Overlay - Rating/Votes (BookMyShow Clone) */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-black px-2 py-1.5 flex items-center gap-1.5 rounded-b-lg md:rounded-b-xl">
+                    <i className="fas fa-star text-[#f84464] text-[10px] md:text-[12px] mb-[1px]"></i>
+                    <div className="font-medium text-white text-[11px] md:text-[13px] font-sans tracking-wide">
                       {movie.rating ? Number(movie.rating).toFixed(1) : (movie.averageRating ? movie.averageRating.toFixed(1) : (Math.random() * (9.8 - 7.5) + 7.5).toFixed(1))}/10
-                      <span className="ml-2 font-normal text-gray-200">{movie.views ? Math.floor(movie.views / 1000) + 'K+' : Math.floor(Math.random() * 50 + 10) + 'K+'} Votes</span>
-                    </span>
+                      <span className="ml-2 md:ml-2.5 inline-block">{movie.views ? Math.floor(movie.views / 1000) + 'K+' : Math.floor(Math.random() * 50 + 10) + 'K+'} Votes</span>
+                    </div>
                   </div>
                 </div>
 

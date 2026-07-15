@@ -8,13 +8,13 @@ const ManagePromotions = () => {
     const [promotions, setPromotions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
-    
+
     // Form Data
     const [title, setTitle] = useState('');
     const [link, setLink] = useState('');
     const [isActive, setIsActive] = useState(true);
     const [order, setOrder] = useState(0);
-    
+
     // Desktop Image
     const [imageFile, setImageFile] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
@@ -54,6 +54,27 @@ const ManagePromotions = () => {
     const handleFileChange = (e, type) => {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
+            
+            // Bypass cropper for SVG files to prevent rasterization blur
+            if (file.type === 'image/svg+xml') {
+                const objectUrl = URL.createObjectURL(file);
+                if (type === 'desktop') {
+                    setImageFile(file);
+                    setCroppedImagePreviewUrl(objectUrl);
+                    setImageUrl('');
+                } else if (type === 'tablet') {
+                    setTabletImageFile(file);
+                    setCroppedTabletPreviewUrl(objectUrl);
+                    setTabletImageUrl('');
+                } else {
+                    setMobileImageFile(file);
+                    setCroppedMobilePreviewUrl(objectUrl);
+                    setMobileImageUrl('');
+                }
+                e.target.value = null;
+                return;
+            }
+
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => {
@@ -73,7 +94,7 @@ const ManagePromotions = () => {
 
     const handleCropComplete = (croppedFile) => {
         const objectUrl = URL.createObjectURL(croppedFile);
-        
+
         if (cropType === 'desktop') {
             setImageFile(croppedFile);
             setCroppedImagePreviewUrl(objectUrl);
@@ -87,13 +108,13 @@ const ManagePromotions = () => {
             setCroppedMobilePreviewUrl(objectUrl);
             setMobileImageUrl('');
         }
-        
+
         setImageSrc(null); // Hide cropper
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!editingId && !imageFile && !imageUrl) {
             alert("Please upload an image or provide an image URL for the Desktop banner.");
             return;
@@ -104,24 +125,27 @@ const ManagePromotions = () => {
         formData.append('link', link);
         formData.append('isActive', isActive);
         formData.append('order', order);
-        
+
         // Desktop Image
         if (imageFile) {
-            formData.append('image', imageFile, 'cropped-promotion.jpg');
+            const ext = imageFile.type === 'image/svg+xml' ? 'svg' : 'jpg';
+            formData.append('image', imageFile, `cropped-promotion.${ext}`);
         } else if (imageUrl) {
             formData.append('imageUrl', imageUrl);
         }
 
         // Tablet Image
         if (tabletImageFile) {
-            formData.append('tabletImage', tabletImageFile, 'cropped-tablet-promotion.jpg');
+            const ext = tabletImageFile.type === 'image/svg+xml' ? 'svg' : 'jpg';
+            formData.append('tabletImage', tabletImageFile, `cropped-tablet-promotion.${ext}`);
         } else if (tabletImageUrl) {
             formData.append('tabletImageUrl', tabletImageUrl);
         }
 
         // Mobile Image
         if (mobileImageFile) {
-            formData.append('mobileImage', mobileImageFile, 'cropped-mobile-promotion.jpg');
+            const ext = mobileImageFile.type === 'image/svg+xml' ? 'svg' : 'jpg';
+            formData.append('mobileImage', mobileImageFile, `cropped-mobile-promotion.${ext}`);
         } else if (mobileImageUrl) {
             formData.append('mobileImageUrl', mobileImageUrl);
         }
@@ -147,7 +171,7 @@ const ManagePromotions = () => {
         setLink(promo.link || '');
         setIsActive(promo.isActive);
         setOrder(promo.order || 0);
-        
+
         setImageFile(null);
         setImageUrl('');
         setCroppedImagePreviewUrl(promo.image || null);
@@ -155,11 +179,11 @@ const ManagePromotions = () => {
         setMobileImageFile(null);
         setMobileImageUrl('');
         setCroppedMobilePreviewUrl(promo.mobileImage || null);
-        
+
         setTabletImageFile(null);
         setTabletImageUrl('');
         setCroppedTabletPreviewUrl(promo.tabletImage || null);
-        
+
         setShowForm(true);
     };
 
@@ -180,7 +204,7 @@ const ManagePromotions = () => {
         setLink('');
         setIsActive(true);
         setOrder(0);
-        
+
         setImageFile(null);
         setImageUrl('');
         setCroppedImagePreviewUrl(null);
@@ -188,11 +212,11 @@ const ManagePromotions = () => {
         setMobileImageFile(null);
         setMobileImageUrl('');
         setCroppedMobilePreviewUrl(null);
-        
+
         setTabletImageFile(null);
         setTabletImageUrl('');
         setCroppedTabletPreviewUrl(null);
-        
+
         setImageSrc(null);
     };
 
@@ -206,7 +230,7 @@ const ManagePromotions = () => {
                         <h1 className="text-2xl font-bold">Manage Promotions</h1>
                         <p className="text-sm text-gray-500">Add, edit, or remove homepage banners</p>
                     </div>
-                    <button 
+                    <button
                         onClick={() => { resetForm(); setShowForm(true); }}
                         className="bg-primary-red text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2"
                     >
@@ -250,48 +274,48 @@ const ManagePromotions = () => {
                     ))}
                 </div>
 
-                <Modal 
-                    isOpen={showForm} 
+                <Modal
+                    isOpen={showForm}
                     onClose={() => { setShowForm(false); resetForm(); }}
                     title={editingId ? "Edit Promotion" : "Add Promotion"}
                 >
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label className="block text-sm font-bold mb-1">Title</label>
-                            <input 
-                                type="text" 
-                                className="w-full p-2 border rounded" 
-                                value={title} 
-                                onChange={e => setTitle(e.target.value)} 
-                                required 
+                            <input
+                                type="text"
+                                className="w-full p-2 border rounded"
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                                required
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-bold mb-1">Target Link (URL)</label>
-                            <input 
-                                type="url" 
-                                className="w-full p-2 border rounded" 
-                                value={link} 
-                                onChange={e => setLink(e.target.value)} 
+                            <input
+                                type="url"
+                                className="w-full p-2 border rounded"
+                                value={link}
+                                onChange={e => setLink(e.target.value)}
                                 placeholder="https://..."
                             />
                         </div>
                         <div className="flex gap-4">
                             <div className="flex-1">
                                 <label className="block text-sm font-bold mb-1">Order</label>
-                                <input 
-                                    type="number" 
-                                    className="w-full p-2 border rounded" 
-                                    value={order} 
-                                    onChange={e => setOrder(e.target.value)} 
+                                <input
+                                    type="number"
+                                    className="w-full p-2 border rounded"
+                                    value={order}
+                                    onChange={e => setOrder(e.target.value)}
                                 />
                             </div>
                             <div className="flex-1 flex items-center mt-6">
                                 <label className="flex items-center gap-2 cursor-pointer">
-                                    <input 
-                                        type="checkbox" 
-                                        checked={isActive} 
-                                        onChange={e => setIsActive(e.target.checked)} 
+                                    <input
+                                        type="checkbox"
+                                        checked={isActive}
+                                        onChange={e => setIsActive(e.target.checked)}
                                         className="w-4 h-4"
                                     />
                                     <span className="font-bold">Active</span>
@@ -302,15 +326,16 @@ const ManagePromotions = () => {
                         <div className="border-t pt-4 mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
                             {/* Desktop Banner Column */}
                             <div>
-                                <h3 className="font-bold text-lg mb-4 text-blue-600 border-b pb-2">Desktop Banner</h3>
+                                <h3 className="font-bold text-lg mb-1 text-blue-600 border-b pb-2">Desktop Banner</h3>
+                                <p className="text-xs text-gray-500 mb-3">Ratio 4:1 (Recommended: 1200 x 300 px)</p>
                                 <label className="block text-sm font-bold mb-1">Upload File</label>
-                                <input 
-                                    type="file" 
-                                    accept="image/*" 
-                                    onChange={(e) => handleFileChange(e, 'desktop')} 
-                                    className="w-full p-2 border rounded text-xs" 
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleFileChange(e, 'desktop')}
+                                    className="w-full p-2 border rounded text-xs"
                                 />
-                                
+
                                 <div className="flex items-center my-3">
                                     <hr className="flex-1 border-gray-300" />
                                     <span className="px-3 text-gray-500 font-bold text-sm">OR</span>
@@ -318,24 +343,24 @@ const ManagePromotions = () => {
                                 </div>
 
                                 <label className="block text-sm font-bold mb-1">Paste URL</label>
-                                <input 
-                                    type="url" 
-                                    className="w-full p-2 border rounded" 
-                                    value={imageUrl} 
+                                <input
+                                    type="url"
+                                    className="w-full p-2 border rounded"
+                                    value={imageUrl}
                                     onChange={e => {
                                         setImageUrl(e.target.value);
                                         setCroppedImagePreviewUrl(e.target.value);
                                         setImageFile(null);
-                                    }} 
+                                    }}
                                     placeholder="https://example.com/banner.jpg"
                                 />
 
                                 {croppedImagePreviewUrl && (
                                     <div className="mt-4 border rounded p-2 bg-gray-50 text-center">
                                         <span className="text-green-600 font-bold text-sm block mb-2">Desktop Preview:</span>
-                                        <img 
-                                            src={croppedImagePreviewUrl} 
-                                            alt="Preview" 
+                                        <img
+                                            src={croppedImagePreviewUrl}
+                                            alt="Preview"
                                             className="w-full h-auto max-h-32 object-contain mx-auto rounded border"
                                         />
                                     </div>
@@ -344,15 +369,16 @@ const ManagePromotions = () => {
 
                             {/* Tablet Banner Column */}
                             <div>
-                                <h3 className="font-bold text-lg mb-4 text-indigo-600 border-b pb-2">Tablet (Optional)</h3>
+                                <h3 className="font-bold text-lg mb-1 text-indigo-600 border-b pb-2">Tablet (Optional)</h3>
+                                <p className="text-xs text-gray-500 mb-3">Ratio 21:9 (Recommended: 1050 x 450 px)</p>
                                 <label className="block text-sm font-bold mb-1">Upload File</label>
-                                <input 
-                                    type="file" 
-                                    accept="image/*" 
-                                    onChange={(e) => handleFileChange(e, 'tablet')} 
-                                    className="w-full p-2 border rounded text-xs" 
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleFileChange(e, 'tablet')}
+                                    className="w-full p-2 border rounded text-xs"
                                 />
-                                
+
                                 <div className="flex items-center my-3">
                                     <hr className="flex-1 border-gray-300" />
                                     <span className="px-3 text-gray-500 font-bold text-sm">OR</span>
@@ -360,24 +386,24 @@ const ManagePromotions = () => {
                                 </div>
 
                                 <label className="block text-sm font-bold mb-1">Paste URL</label>
-                                <input 
-                                    type="url" 
-                                    className="w-full p-2 border rounded" 
-                                    value={tabletImageUrl} 
+                                <input
+                                    type="url"
+                                    className="w-full p-2 border rounded"
+                                    value={tabletImageUrl}
                                     onChange={e => {
                                         setTabletImageUrl(e.target.value);
                                         setCroppedTabletPreviewUrl(e.target.value);
                                         setTabletImageFile(null);
-                                    }} 
+                                    }}
                                     placeholder="https://..."
                                 />
 
                                 {croppedTabletPreviewUrl && (
                                     <div className="mt-4 border rounded p-2 bg-gray-50 text-center">
                                         <span className="text-green-600 font-bold text-sm block mb-2">Tablet Preview:</span>
-                                        <img 
-                                            src={croppedTabletPreviewUrl} 
-                                            alt="Tablet Preview" 
+                                        <img
+                                            src={croppedTabletPreviewUrl}
+                                            alt="Tablet Preview"
                                             className="w-full h-auto max-h-32 object-contain mx-auto rounded border"
                                         />
                                     </div>
@@ -386,15 +412,16 @@ const ManagePromotions = () => {
 
                             {/* Mobile Banner Column */}
                             <div>
-                                <h3 className="font-bold text-lg mb-4 text-purple-600 border-b pb-2">Mobile (Optional)</h3>
+                                <h3 className="font-bold text-lg mb-1 text-purple-600 border-b pb-2">Mobile (Optional)</h3>
+                                <p className="text-xs text-gray-500 mb-3">Ratio 16:9 (Recommended: 800 x 450 px)</p>
                                 <label className="block text-sm font-bold mb-1">Upload File</label>
-                                <input 
-                                    type="file" 
-                                    accept="image/*" 
-                                    onChange={(e) => handleFileChange(e, 'mobile')} 
-                                    className="w-full p-2 border rounded text-xs" 
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => handleFileChange(e, 'mobile')}
+                                    className="w-full p-2 border rounded text-xs"
                                 />
-                                
+
                                 <div className="flex items-center my-3">
                                     <hr className="flex-1 border-gray-300" />
                                     <span className="px-3 text-gray-500 font-bold text-sm">OR</span>
@@ -402,31 +429,31 @@ const ManagePromotions = () => {
                                 </div>
 
                                 <label className="block text-sm font-bold mb-1">Paste URL</label>
-                                <input 
-                                    type="url" 
-                                    className="w-full p-2 border rounded" 
-                                    value={mobileImageUrl} 
+                                <input
+                                    type="url"
+                                    className="w-full p-2 border rounded"
+                                    value={mobileImageUrl}
                                     onChange={e => {
                                         setMobileImageUrl(e.target.value);
                                         setCroppedMobilePreviewUrl(e.target.value);
                                         setMobileImageFile(null);
-                                    }} 
+                                    }}
                                     placeholder="https://..."
                                 />
 
                                 {croppedMobilePreviewUrl && (
                                     <div className="mt-4 border rounded p-2 bg-gray-50 text-center">
                                         <span className="text-green-600 font-bold text-sm block mb-2">Mobile Preview:</span>
-                                        <img 
-                                            src={croppedMobilePreviewUrl} 
-                                            alt="Mobile Preview" 
+                                        <img
+                                            src={croppedMobilePreviewUrl}
+                                            alt="Mobile Preview"
                                             className="w-full h-auto max-h-32 object-contain mx-auto rounded border"
                                         />
                                     </div>
                                 )}
                             </div>
                         </div>
-                        
+
                         <div className="pt-4 flex justify-end">
                             <button type="submit" className="bg-primary-red text-white px-6 py-2 rounded font-bold">
                                 Save Promotion
@@ -440,7 +467,7 @@ const ManagePromotions = () => {
                         isOpen={!!imageSrc}
                         onClose={() => setImageSrc(null)}
                         imageSrc={imageSrc}
-                        aspect={cropType === 'desktop' ? (1240 / 220) : cropType === 'tablet' ? (4 / 1) : (16 / 7)}
+                        aspect={cropType === 'desktop' ? (4 / 1) : cropType === 'tablet' ? (21 / 9) : (16 / 9)}
                         onCropComplete={handleCropComplete}
                     />
                 )}

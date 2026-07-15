@@ -36,6 +36,39 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+        
+        {/* Auto-Reload on Chunk Error */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('error', function(e) {
+                var isChunkLoadError = e.message && (e.message.includes('ChunkLoadError') || e.message.includes('Failed to fetch'));
+                var isScriptError = e.target && e.target.tagName === 'SCRIPT' && e.target.src && e.target.src.includes('/_next/static/chunks/');
+                
+                if (isChunkLoadError || isScriptError) {
+                  if (!sessionStorage.getItem('chunk_reloaded')) {
+                    sessionStorage.setItem('chunk_reloaded', 'true');
+                    window.location.reload(true);
+                  }
+                }
+              }, true);
+
+              window.addEventListener('unhandledrejection', function(e) {
+                if (e.reason && e.reason.message && (e.reason.message.includes('ChunkLoadError') || e.reason.message.includes('Failed to fetch'))) {
+                  if (!sessionStorage.getItem('chunk_reloaded')) {
+                    sessionStorage.setItem('chunk_reloaded', 'true');
+                    window.location.reload(true);
+                  }
+                }
+              });
+
+              // Clear the reload flag after a successful load
+              setTimeout(function() {
+                sessionStorage.removeItem('chunk_reloaded');
+              }, 5000);
+            `,
+          }}
+        />
       </head>
       <body suppressHydrationWarning>
         <Providers>
