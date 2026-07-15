@@ -40,7 +40,7 @@ const CountdownTimer = ({ targetDate, onComplete }) => {
         <span className="text-xl md:text-2xl font-black text-white leading-none tracking-tighter">
             {timeLeft[interval] < 10 ? `0${timeLeft[interval]}` : timeLeft[interval]}
         </span>
-        <span className="text-[7px] md:text-[8px] font-black uppercase tracking-[0.2em] text-primary-red/80 mt-1.5">{interval}</span>
+        <span className="text-[7px] md:text-[8px] font-black uppercase tracking-[0.2em] text-yellow-500 mt-1.5">{interval}</span>
       </div>
     );
   });
