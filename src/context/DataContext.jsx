@@ -75,50 +75,78 @@ export const DataProvider = ({ children }) => {
     };
 
     try {
-      
-      const results = await Promise.all([
-          withTimeout(api.getMe(), 10000, 'auth/me').then(r => { if (r?.data?.success) setUser(r.data.user); return r; }).catch(e => { setUser(null); return null; }).finally(() => increment('auth/me')),
-          withTimeout(api.getMovies(), 15000, 'movies').catch(e => ({data:[]})).finally(() => increment('movies')),
-          withTimeout(api.getNews(), 15000, 'news').catch(e => ({data:[]})).finally(() => increment('news')),
-          withTimeout(api.getTodayNews(), 15000, 'todayNews').catch(e => ({data:[]})).finally(() => increment('todayNews')),
-          withTimeout(api.getCelebrities(), 15000, 'celebs').catch(e => ({data:[]})).finally(() => increment('celebs')),
-          withTimeout(api.getVideos(), 15000, 'videos').catch(e => ({data:[]})).finally(() => increment('videos')),
-          withTimeout(api.getAnnouncements(), 15000, 'announcements').catch(e => ({data:[]})).finally(() => increment('announcements'))
-      ]);
+      // 1. Auth
+      withTimeout(api.getMe(), 10000, 'auth/me')
+        .then(r => { if (r?.data?.success) setUser(r.data.user); })
+        .catch(e => { setUser(null); })
+        .finally(() => increment('auth/me'));
 
-      const [meRes, moviesRes, newsRes, todayNewsRes, celebsRes, videosRes, annRes] = results;
+      // 2. Movies
+      withTimeout(api.getMovies(), 15000, 'movies')
+        .then(res => {
+          const newMovies = ((res && res.data) ? (Array.isArray(res.data) ? res.data : res.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.year) - new Date(a.createdAt || a.year));
+          setMovies(newMovies);
+        })
+        .catch(e => console.error("Movies failed", e))
+        .finally(() => increment('movies'));
 
-      const newMovies = ((moviesRes && moviesRes.data) ? (Array.isArray(moviesRes.data) ? moviesRes.data : moviesRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.year) - new Date(a.createdAt || a.year));
-      const newNews = ((newsRes && newsRes.data) ? (Array.isArray(newsRes.data) ? newsRes.data : newsRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
-      const newTodayNews = ((todayNewsRes && todayNewsRes.data) ? (Array.isArray(todayNewsRes.data) ? todayNewsRes.data : todayNewsRes.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
-      const newCelebs = (celebsRes && celebsRes.data) ? (Array.isArray(celebsRes.data) ? celebsRes.data : celebsRes.data.data || []) : []; 
-      const newVideos = (videosRes && videosRes.data) ? (Array.isArray(videosRes.data) ? videosRes.data : videosRes.data.data || []) : [];
-      const newAnnouncements = (annRes && annRes.data) ? (Array.isArray(annRes.data) ? annRes.data : annRes.data.data || []) : [];
+      // 3. News
+      withTimeout(api.getNews(), 15000, 'news')
+        .then(res => {
+          const newNews = ((res && res.data) ? (Array.isArray(res.data) ? res.data : res.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
+          setNews(newNews);
+        })
+        .catch(e => console.error("News failed", e))
+        .finally(() => increment('news'));
 
-      setMovies(newMovies);
-      setNews(newNews);
-      setTodayNews(newTodayNews);
-      setCelebs(newCelebs);
-      setVideos(newVideos);
-      setAnnouncements(newAnnouncements);
+      // 4. Today News
+      withTimeout(api.getTodayNews(), 15000, 'todayNews')
+        .then(res => {
+          const newTodayNews = ((res && res.data) ? (Array.isArray(res.data) ? res.data : res.data.data || []) : []).sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
+          setTodayNews(newTodayNews);
+        })
+        .catch(e => console.error("TodayNews failed", e))
+        .finally(() => increment('todayNews'));
 
-      // Save fresh data to cache for next time
-      try {
-        localStorage.setItem('pbt_cached_data', JSON.stringify({
-          movies: newMovies,
-          news: newNews,
-          todayNews: newTodayNews,
-          celebs: newCelebs,
-          videos: newVideos,
-          announcements: newAnnouncements
-        }));
-      } catch (e) {}
+      // 5. Celebs
+      withTimeout(api.getCelebrities(), 15000, 'celebs')
+        .then(res => {
+          const newCelebs = (res && res.data) ? (Array.isArray(res.data) ? res.data : res.data.data || []) : []; 
+          setCelebs(newCelebs);
+        })
+        .catch(e => console.error("Celebs failed", e))
+        .finally(() => increment('celebs'));
+
+      // 6. Videos
+      withTimeout(api.getVideos(), 15000, 'videos')
+        .then(res => {
+          const newVideos = (res && res.data) ? (Array.isArray(res.data) ? res.data : res.data.data || []) : [];
+          setVideos(newVideos);
+        })
+        .catch(e => console.error("Videos failed", e))
+        .finally(() => increment('videos'));
+
+      // 7. Announcements
+      withTimeout(api.getAnnouncements(), 15000, 'announcements')
+        .then(res => {
+          const newAnnouncements = (res && res.data) ? (Array.isArray(res.data) ? res.data : res.data.data || []) : [];
+          setAnnouncements(newAnnouncements);
+        })
+        .catch(e => console.error("Announcements failed", e))
+        .finally(() => increment('announcements'));
+
+      // Setup completion checker
+      const checkCompletion = setInterval(() => {
+        if (completed >= totalRequests) {
+          clearInterval(fakeProgressInterval);
+          clearInterval(checkCompletion);
+          setLoadingProgress(100);
+          setTimeout(() => setIsLoading(false), 300);
+        }
+      }, 500);
+
     } catch (err) {
       console.error("Error fetching data:", err);
-    } finally {
-      clearInterval(fakeProgressInterval);
-      setLoadingProgress(100);
-      setTimeout(() => setIsLoading(false), 300); // Give it a tiny delay to show 100%
     }
   };
 
@@ -541,7 +569,8 @@ export const DataProvider = ({ children }) => {
     //   combinedAnnouncements.push({ text: "Stay tuned for the latest film updates!", link: null });
     // }
 
-    if (isLoading) return <Loading progress={loadingProgress} />;
+    // Removed blocking loading screen to improve FCP & LCP!
+    // if (isLoading) return <Loading progress={loadingProgress} />;
 
     return (
       <DataContext.Provider value={{
@@ -559,6 +588,12 @@ export const DataProvider = ({ children }) => {
         addVideoComment, deleteVideoComment, likeVideoComment, updateVideoComment,
         addCelebComment, deleteCelebComment, likeCelebComment, updateCelebComment, followCeleb, autoGenerateCelebSEO
       }}>
+      {isLoading && (
+        <div 
+          className="fixed top-0 left-0 h-[3px] bg-[#e31e24] z-[9999] transition-all duration-300 ease-out" 
+          style={{ width: `${loadingProgress}%`, opacity: loadingProgress === 100 ? 0 : 1 }} 
+        />
+      )}
       {children}
     </DataContext.Provider>
   );
