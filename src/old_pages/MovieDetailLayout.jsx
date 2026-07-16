@@ -451,7 +451,6 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                             <div className="flex flex-col items-center md:items-start gap-4 mb-6">
                                 {/* Production House (Mobile Focus) */}
                                 <div className="flex flex-col items-center md:items-start gap-1">
-                                    <span className="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-[0.4em]">Pbtadka Productions</span>
                                     <div className="flex items-center gap-3">
                                         <div className="hidden md:block w-8 h-[3px] bg-yellow-400"></div>
                                         <div className="md:hidden w-12 h-1 bg-yellow-400 rounded-full"></div>

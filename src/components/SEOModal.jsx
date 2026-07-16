@@ -19,7 +19,16 @@ const SEOModal = ({ isOpen, onClose, entry, onRefresh }) => {
 
     useEffect(() => {
         if (entry) {
-            setFormData(entry);
+            setFormData({
+                ...entry,
+                url: entry.url || '',
+                title: entry.title || '',
+                description: entry.description || '',
+                keywords: entry.keywords || '',
+                canonical: entry.canonical || '',
+                robots: entry.robots || 'index, follow',
+                isAuto: entry.isAuto || false
+            });
         } else {
             setFormData({
                 url: '',
