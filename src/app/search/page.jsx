@@ -5,10 +5,14 @@ export const metadata = {
     title: 'Search Page | Pbtadka',
 };
 
+import { Suspense } from 'react';
+
 export default function Page() {
     return (
         <MainLayout>
-            <Component />
+            <Suspense fallback={<div className="min-h-[50vh] flex items-center justify-center">Loading search...</div>}>
+                <Component />
+            </Suspense>
         </MainLayout>
     );
 }

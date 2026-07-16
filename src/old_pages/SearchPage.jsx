@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 ;
@@ -9,7 +9,8 @@ const SearchPage = () => {
   const { news, movies, celebs, videos } = useData();
   const pathname = usePathname();
   const router = useRouter();
-  const query = new URLSearchParams(location.search).get('q')?.toLowerCase() || '';
+  const searchParams = useSearchParams();
+  const query = searchParams.get('q')?.toLowerCase() || '';
 
   const results = useMemo(() => {
     if (!query) return { news: [], movies: [], celebs: [], videos: [] };
