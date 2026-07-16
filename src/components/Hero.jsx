@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-
+import Image from 'next/image';
 
 import { useState, useEffect } from 'react';
 ;
@@ -65,12 +65,13 @@ const Hero = () => {
               >
                 {/* Top Image Area */}
                 <div className="w-full relative overflow-hidden bg-slate-50 border-b border-gray-100" style={{ aspectRatio: '21/9' }}>
-                    <img 
-                    src={optimizeImage(story.image)} 
-                    alt={story.title}
-                    fetchPriority={index === 0 ? "high" : "auto"}
-                    decoding="async"
-                    className="w-full h-full object-cover transition-transform duration-[8s] ease-linear hover:scale-105"
+                    <Image 
+                      src={optimizeImage(story.image)} 
+                      alt={story.title}
+                      priority={index === 0}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 800px"
+                      className="object-cover transition-transform duration-[8s] ease-linear hover:scale-105"
                     />
                     
                     {/* Minimal Category Badge */}
