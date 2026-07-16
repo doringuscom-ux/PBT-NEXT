@@ -3,7 +3,7 @@ import { useParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 ;
 import { useData } from '../context/DataContext';
 import CountdownTimer from '../components/CountdownTimer';
@@ -97,7 +97,11 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
         }
     };
 
-    const getSuggestions = () => {
+    const [suggestedMovies, setSuggestedMovies] = useState([]);
+
+    useEffect(() => {
+        if (!movies || !movie) return;
+        
         const oneMonthAgo = new Date();
         oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
         
@@ -122,10 +126,8 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
         }
         
         // Final shuffle 
-        return suggested.sort(() => 0.5 - Math.random());
-    };
-
-    const suggestedMovies = getSuggestions();
+        setSuggestedMovies(suggested.sort(() => 0.5 - Math.random()));
+    }, [movies, movie]);
 
     // Combined Gallery for Modal
     const galleryImages = [
@@ -817,23 +819,23 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                     </div>
 
                                     {/* Screens & Release Data */}
-                                    <div className="bg-white/5 rounded-[2rem] p-8 border border-white/10 shadow-sm flex flex-col justify-center gap-6">
+                                    <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm flex flex-col justify-center gap-6">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-2xl bg-yellow-400/5 flex items-center justify-center text-yellow-400">
+                                            <div className="w-12 h-12 rounded-2xl bg-yellow-400/10 flex items-center justify-center text-yellow-500">
                                                 <i className="fas fa-desktop text-xl"></i>
                                             </div>
                                             <div>
                                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Screens Count</p>
-                                                <h4 className="text-xl font-black italic uppercase text-white">{movie.performance?.screens || 'N/A'} <span className="text-[10px] text-slate-400 lowercase italic ml-1">Worldwide</span></h4>
+                                                <h4 className="text-xl font-black italic uppercase text-slate-900">{movie.performance?.screens || 'N/A'} <span className="text-[10px] text-slate-400 lowercase italic ml-1">Worldwide</span></h4>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-2xl bg-blue-500/5 flex items-center justify-center text-blue-500">
+                                            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500">
                                                 <i className="fas fa-calendar-alt text-xl"></i>
                                             </div>
                                             <div>
                                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Release Date</p>
-                                                <h4 className="text-xl font-black italic uppercase text-white">
+                                                <h4 className="text-xl font-black italic uppercase text-slate-900">
                                                     {
                                                         (movie.isReleaseDateConfirmed && movie.releaseDate) ? (
                                                             new Date(movie.releaseDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
@@ -848,15 +850,15 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                 </div>
 
                                 {/* Collection Breakdown Table */}
-                                <div className="bg-white/5 rounded-[2.5rem] border border-white/10 shadow-lg overflow-hidden">
-                                    <div className="bg-black/20 px-8 py-5 border-b border-white/5">
-                                        <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                                            <i className="fas fa-table text-yellow-400"></i> Collection Breakdown
+                                <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-lg overflow-hidden">
+                                    <div className="bg-slate-50 px-8 py-5 border-b border-slate-100">
+                                        <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                            <i className="fas fa-table text-yellow-500"></i> Collection Breakdown
                                         </h3>
                                     </div>
                                     <div className="overflow-x-auto">
                                         <table className="w-full text-left">
-                                            <tbody className="divide-y divide-white/5">
+                                            <tbody className="divide-y divide-slate-50">
                                                 {[
                                                     { label: 'Opening Day (Day 1)', value: movie.performance?.day1, highlight: true },
                                                     { label: 'Opening Weekend', value: movie.performance?.weekend },
@@ -865,9 +867,9 @@ const MovieDetailLayout = ({ movie: propMovie, sidebarNews }) => {
                                                     { label: 'India Gross Collection', value: movie.performance?.indiaGross },
                                                     { label: 'Overseas Collection', value: movie.performance?.overseas },
                                                 ].map((row, idx) => (
-                                                    <tr key={idx} className={`${row.highlight ? 'bg-yellow-400/5' : 'hover:bg-white/5'} transition-colors`}>
-                                                        <td className="px-8 py-5 text-sm font-black text-gray-300 uppercase tracking-tight">{row.label}</td>
-                                                        <td className="px-8 py-5 text-right font-black text-white italic">
+                                                    <tr key={idx} className={`${row.highlight ? 'bg-yellow-50' : 'hover:bg-slate-50'} transition-colors`}>
+                                                        <td className="px-8 py-5 text-sm font-black text-slate-600 uppercase tracking-tight">{row.label}</td>
+                                                        <td className="px-8 py-5 text-right font-black text-slate-900 italic">
                                                             {row.value ? `₹${row.value} Cr` : '-'}
                                                         </td>
                                                     </tr>

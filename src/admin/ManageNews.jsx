@@ -24,6 +24,7 @@ const ManageNews = () => {
   const [imageSource, setImageSource] = useState('url'); // 'url' or 'file'
   const [selectedFile, setSelectedFile] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [showComments, setShowComments] = useState(false);
@@ -72,18 +73,23 @@ const ManageNews = () => {
         data.append('image', selectedFile);
     }
 
-    if (editingIndex !== null) {
-      await updateNews(formData._id, data);
-      setEditingIndex(null);
-    } else {
-      await addNews(data);
+    setIsSubmitting(true);
+    try {
+        if (editingIndex !== null) {
+          await updateNews(formData._id, data);
+          setEditingIndex(null);
+        } else {
+          await addNews(data);
+        }
+        setFormData({ title: '', image: '', category: '', excerpt: '', date: '', fullStory: '', author: 'Editor Team', likes: 0, slug: '', relatedMovie: '', relatedCelebrities: [] });
+        setSelectedFile(null);
+        setImageSource('url');
+        setShowForm(false);
+        setMovieSearchTerm('');
+        setCelebSearchTerm('');
+    } finally {
+        setIsSubmitting(false);
     }
-    setFormData({ title: '', image: '', category: '', excerpt: '', date: '', fullStory: '', author: 'Editor Team', likes: 0, slug: '', relatedMovie: '', relatedCelebrities: [] });
-    setSelectedFile(null);
-    setImageSource('url');
-    setShowForm(false);
-    setMovieSearchTerm('');
-    setCelebSearchTerm('');
   };
 
   const handleEdit = (article) => {
@@ -385,7 +391,9 @@ const ManageNews = () => {
             />
           </div>
           <div className="md:col-span-2 flex gap-2 pt-4">
-            <button type="submit" className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-green-700 transition-all">Save Changes</button>
+            <button type="submit" disabled={isSubmitting} className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-green-700 transition-all disabled:opacity-50">
+              {isSubmitting ? 'Saving...' : 'Save Changes'}
+            </button>
             <button type="button" onClick={() => setShowForm(false)} className="bg-gray-100 text-gray-600 px-8 py-3 rounded-xl font-bold hover:bg-gray-200 transition-all">Cancel</button>
           </div>
         </form>
