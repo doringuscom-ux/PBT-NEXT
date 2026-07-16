@@ -157,14 +157,14 @@ const PromotionCarousel = () => {
                                             <picture>
                                                 {promo.mobileImage && <source media="(max-width: 639px)" srcSet={promo.mobileImage} />}
                                                 {promo.tabletImage && <source media="(max-width: 1023px)" srcSet={promo.tabletImage} />}
-                                                <img src={promo.image} alt={promo.title} className="w-full h-full object-cover" />
+                                                <img fetchPriority={idx === 0 ? "high" : "auto"} src={promo.image} alt={promo.title} className="w-full h-full object-cover" />
                                             </picture>
                                         </Link>
                                     ) : (
                                         <picture>
                                             {promo.mobileImage && <source media="(max-width: 639px)" srcSet={promo.mobileImage} />}
                                             {promo.tabletImage && <source media="(max-width: 1023px)" srcSet={promo.tabletImage} />}
-                                            <img src={promo.image} alt={promo.title} className="w-full h-full object-cover" />
+                                            <img fetchPriority={idx === 0 ? "high" : "auto"} src={promo.image} alt={promo.title} className="w-full h-full object-cover" />
                                         </picture>
                                     )}
                                 </div>

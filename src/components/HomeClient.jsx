@@ -4,16 +4,18 @@ import MainLayout from '@/layouts/MainLayout';
 
 import Hero from '@/components/Hero';
 import PromotionCarousel from '@/components/PromotionCarousel';
-import MovieSlider from '@/components/MovieSlider';
-import MovieCalendar from '@/components/MovieCalendar';
-import NewsGrid from '@/components/NewsGrid';
-import CelebGrid from '@/components/CelebGrid';
-import SidebarVideos from '@/components/SidebarVideos';
-import CompactNewsSlider from '@/components/CompactNewsSlider';
-import CompactMoviesSlider from '@/components/CompactMoviesSlider';
-import CompactTrailersSlider from '@/components/CompactTrailersSlider';
-import CompactCelebSlider from '@/components/CompactCelebSlider';
-import CompactSongsSlider from '@/components/CompactSongsSlider';
+import dynamic from 'next/dynamic';
+
+const MovieSlider = dynamic(() => import('@/components/MovieSlider'));
+const MovieCalendar = dynamic(() => import('@/components/MovieCalendar'));
+const NewsGrid = dynamic(() => import('@/components/NewsGrid'));
+const CelebGrid = dynamic(() => import('@/components/CelebGrid'));
+const SidebarVideos = dynamic(() => import('@/components/SidebarVideos'));
+const CompactNewsSlider = dynamic(() => import('@/components/CompactNewsSlider'));
+const CompactMoviesSlider = dynamic(() => import('@/components/CompactMoviesSlider'));
+const CompactTrailersSlider = dynamic(() => import('@/components/CompactTrailersSlider'));
+const CompactCelebSlider = dynamic(() => import('@/components/CompactCelebSlider'));
+const CompactSongsSlider = dynamic(() => import('@/components/CompactSongsSlider'));
 
 export default function HomeClient() {
   return (
