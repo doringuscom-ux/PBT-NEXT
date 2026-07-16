@@ -17,7 +17,7 @@ const NewsGrid = () => {
 
   return (
     <div className="px-4 lg:px-20 xl:px-32 2xl:px-48">
-      <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+      <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
             <h3 className="font-bold text-slate-800 text-xl md:text-2xl">Latest News</h3>
         </div>

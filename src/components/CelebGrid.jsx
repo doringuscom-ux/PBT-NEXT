@@ -129,7 +129,7 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
           
           <div 
             ref={sliderRef}
-            className={`flex overflow-x-auto ${!industry ? 'gap-4 lg:gap-6' : 'gap-4 lg:gap-5'} px-2 no-scrollbar pb-6 pt-2`}
+            className={`flex overflow-x-auto ${!industry ? 'gap-4 lg:gap-6' : 'gap-4 lg:gap-5'} px-2 no-scrollbar pb-6`}
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
