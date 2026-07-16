@@ -72,7 +72,6 @@ const SEOModal = ({ isOpen, onClose, entry, onRefresh }) => {
                             required
                             value={formData.url}
                             onChange={handleChange}
-                            disabled={!!entry}
                         />
                         <p className="text-[8px] text-slate-300 font-bold uppercase tracking-widest pl-1 italic">The exact path shown in the browser address bar.</p>
                     </div>
