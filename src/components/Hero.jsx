@@ -83,7 +83,10 @@ const Hero = () => {
                 
                 {/* Bottom White Text Area */}
                 <div className="px-5 py-4 md:px-8 md:py-5 bg-white text-left relative z-10">
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-red-700 leading-[1.3] md:leading-[1.4] mb-3">
+                    <h2 
+                      className="text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-red-700 leading-[1.3] md:leading-[1.4] mb-3 line-clamp-1"
+                      title={story.title}
+                    >
                         {story.title}
                     </h2>
                     

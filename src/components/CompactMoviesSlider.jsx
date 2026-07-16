@@ -70,7 +70,7 @@ export default function CompactMoviesSlider() {
                 className="group no-underline flex flex-col snap-start shrink-0 w-[calc(50%-8px)] sm:w-[calc(33.333%-11px)] md:w-[calc(25%-12px)] lg:w-[calc(20%-19px)]"
               >
                 {/* Image Container */}
-                <div className="w-full aspect-[4/5] sm:aspect-[4/5] md:aspect-[3/4] rounded-lg md:rounded-xl overflow-hidden bg-slate-100 relative mb-3">
+                <div className="w-full aspect-[2/3] rounded-lg md:rounded-xl overflow-hidden bg-slate-100 relative mb-3">
                   <img
                     src={movie.image}
                     alt={movie.title}

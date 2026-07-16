@@ -62,7 +62,7 @@ export default function CompactSongsSlider() {
   if (!loading && songs.length === 0) return null;
 
   return (
-    <div className="w-[100vw] relative left-[50%] -translate-x-[50%] bg-gradient-to-r from-[#2c1035] via-[#1a0822] to-[#0a0011] py-10 my-8 border-y border-purple-500/20 shadow-[inset_0_0_80px_rgba(138,43,226,0.15)] overflow-hidden">
+    <div className="w-[100vw] relative left-[50%] -translate-x-[50%] bg-gradient-to-r from-[#2c1035] via-[#1a0822] to-[#0a0011] py-10 border-y border-purple-500/20 shadow-[inset_0_0_80px_rgba(138,43,226,0.15)] overflow-hidden">
       {/* Hidden Audio Player for 30s previews */}
       <audio ref={audioRef} onEnded={() => setPlayingId(null)} />
 

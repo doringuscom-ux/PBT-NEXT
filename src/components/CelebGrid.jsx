@@ -108,15 +108,11 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
   };
 
   return (
-    <div className="mt-0 mb-4 overflow-hidden relative px-4 lg:px-20 xl:px-32 2xl:px-48">
+    <div className="mt-0 overflow-hidden relative px-4 lg:px-20 xl:px-32 2xl:px-48">
       <div className="w-full">
-        <div className="flex justify-between items-center mb-6 border-b pb-3 border-gray-100">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-3">
-              {!industry && (
-                <div className="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center border border-red-100">
-                    <i className="fas fa-arrow-trend-up text-red-500 text-sm"></i>
-                </div>
-              )}
+
               <h3 className="font-black tracking-tight text-xl md:text-2xl lg:text-3xl uppercase text-slate-900">
                 {industry ? `${industry} Celebrities` : 'Trending Celebrities'}
               </h3>
@@ -129,7 +125,7 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
           </Link>
         </div>
         
-        <div className="celeb-marquee-container relative w-full overflow-hidden py-2">
+        <div className="celeb-marquee-container relative w-full overflow-hidden">
           
           <div 
             ref={sliderRef}

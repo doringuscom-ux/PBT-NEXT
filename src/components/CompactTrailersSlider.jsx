@@ -75,7 +75,7 @@ export default function CompactTrailersSlider() {
   );
 
   return (
-    <div className="w-[100vw] relative left-[50%] -translate-x-[50%] bg-gradient-to-b from-[#1e2336] to-[#0f121d] py-10 mt-6 mb-[18px] border-y border-white/5">
+    <div className="w-[100vw] relative left-[50%] -translate-x-[50%] bg-gradient-to-b from-[#1e2336] to-[#0f121d] py-10 border-y border-white/5">
       <div className="w-[96%] max-w-[1800px] mx-auto px-4">
         <div className="px-4 lg:px-20 xl:px-32 2xl:px-48">
           {/* Premiere-style Banner Header */}

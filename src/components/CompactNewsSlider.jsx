@@ -44,7 +44,7 @@ export default function CompactNewsSlider() {
   };
 
   return (
-    <div className="w-[100vw] relative left-[50%] -translate-x-[50%] bg-[#0a0a0a] py-12 my-8 border-y border-white/10 shadow-[inset_0_0_50px_rgba(0,0,0,0.5)]">
+    <div className="w-[100vw] relative left-[50%] -translate-x-[50%] bg-[#0a0a0a] py-12 border-y border-white/10 shadow-[inset_0_0_50px_rgba(0,0,0,0.5)]">
       <div className="w-[96%] max-w-[1800px] mx-auto px-4">
         <div className="px-4 lg:px-20 xl:px-32 2xl:px-48">
           {/* Header */}

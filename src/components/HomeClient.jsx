@@ -30,14 +30,14 @@ export default function HomeClient() {
 
 
           {/* Hero and Sidebar Row (Moved below Celebrities) */}
-          <div className="flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-10 xl:gap-12 items-stretch lg:px-24 xl:px-48 my-8">
+          <div className="flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-10 xl:gap-12 items-stretch px-4 lg:px-20 xl:px-32 2xl:px-48">
             {/* Left Column (Hero) */}
-            <div className="flex-1 lg:w-[65%] xl:w-[66%] min-w-0 flex flex-col">
+            <div className="flex-1 min-w-0 flex flex-col">
               <Hero />
             </div>
 
             {/* Right Column (Sidebar) */}
-            <aside className="hidden lg:block lg:w-[35%] xl:w-[34%] relative">
+            <aside className="hidden lg:block lg:w-[350px] xl:w-[400px] 2xl:w-[450px] shrink-0 relative">
               <div className="absolute inset-0">
                 <SidebarVideos />
               </div>
@@ -47,7 +47,7 @@ export default function HomeClient() {
 
 
           {/* Compact Sliders Row */}
-          <div className="flex flex-col space-y-8 lg:space-y-12 mt-8 lg:mt-12">
+          <div className="flex flex-col gap-8 lg:gap-[30px]">
             <MovieCalendar />
             <CompactTrailersSlider />
             <CompactMoviesSlider />
