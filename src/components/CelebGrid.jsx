@@ -113,7 +113,7 @@ const CelebGrid = ({ industry, excludeTrending = false }) => {
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-3">
 
-              <h3 className="font-black tracking-tight text-xl md:text-2xl lg:text-3xl uppercase text-slate-900">
+              <h3 className="font-bold text-slate-800 text-xl md:text-2xl">
                 {industry ? `${industry} Celebrities` : 'Trending Celebrities'}
               </h3>
           </div>

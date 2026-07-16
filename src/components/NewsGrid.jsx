@@ -19,7 +19,7 @@ const NewsGrid = () => {
     <div className="px-4 lg:px-20 xl:px-32 2xl:px-48">
       <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
         <div className="flex items-center gap-2">
-            <h3 className="font-black text-slate-900 tracking-tight text-xl md:text-2xl lg:text-3xl uppercase">Latest News</h3>
+            <h3 className="font-bold text-slate-800 text-xl md:text-2xl">Latest News</h3>
         </div>
         <Link href="/latest-news" className="text-[10px] md:text-xs font-bold text-red-600 hover:text-red-700 uppercase tracking-wider flex items-center gap-1">
             VIEW ALL <i className="fas fa-chevron-right text-[8px]"></i>
