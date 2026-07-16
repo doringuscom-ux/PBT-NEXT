@@ -28,12 +28,7 @@ export default function RootLayout({ children }) {
         <link 
             rel="stylesheet" 
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-            media="print" 
-            onLoad="this.media='all'" 
         />
-        <noscript>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-        </noscript>
         
         {/* Google Adsense */}
         <meta name="google-adsense-account" content="ca-pub-6214614018313479" />
@@ -76,12 +71,12 @@ export default function RootLayout({ children }) {
           {children}
         </Providers>
 
-        <Script 
-            id="adsense"
+        {/* Reverted to standard script tag to avoid AdSense data-nscript error */}
+        <script 
+            async 
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6214614018313479" 
-            strategy="lazyOnload"
             crossOrigin="anonymous" 
-        />
+        ></script>
 
         <Script 
             id="ga-script"
