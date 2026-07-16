@@ -97,19 +97,19 @@ const PromotionCarousel = () => {
         ? [promotions[promotions.length - 1], ...promotions, promotions[0]]
         : promotions;
 
-    if (isLoading || promotions.length === 0) return null;
+    const aspectClasses = "aspect-[16/9] md:aspect-[21/9] lg:aspect-[4/1]";
+
+    if (isLoading) {
+        return (
+            <div className="relative w-full overflow-hidden py-2 md:py-4 mb-4">
+                 <div className={`w-full px-2 lg:px-0 lg:w-[65%] mx-auto ${aspectClasses} bg-slate-200 animate-pulse rounded-xl`}></div>
+            </div>
+        );
+    }
+    if (promotions.length === 0) return null;
 
     return (
         <>
-            <style>{`
-            .promo-aspect-box { aspect-ratio: 16 / 9; }
-            @media (min-width: 768px) {
-                .promo-aspect-box { aspect-ratio: 21 / 9; }
-            }
-            @media (min-width: 1024px) {
-                .promo-aspect-box { aspect-ratio: 4 / 1; }
-            }
-        `}</style>
             <div
                 className="relative w-full overflow-hidden group py-2 md:py-4 mb-4 touch-pan-y"
                 onTouchStart={onTouchStart}
@@ -117,7 +117,7 @@ const PromotionCarousel = () => {
                 onTouchEnd={onTouchEnd}
             >
                 {/* Dummy element to dictate perfect height based on 75% width */}
-                <div className="w-full px-2 lg:px-0 lg:w-[65%] mx-auto promo-aspect-box opacity-0 pointer-events-none"></div>
+                <div className={`w-full px-2 lg:px-0 lg:w-[65%] mx-auto ${aspectClasses} opacity-0 pointer-events-none`}></div>
 
                 {/* Carousel Track - Absolute positioned slides */}
                 <div className="absolute inset-0 flex items-center justify-center py-2 md:py-4">
