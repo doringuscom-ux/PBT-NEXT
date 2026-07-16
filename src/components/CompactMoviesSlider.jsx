@@ -6,6 +6,8 @@ import { useData } from '../context/DataContext';
 export default function CompactMoviesSlider() {
   const { movies } = useData();
 
+  const scrollRef = useRef(null);
+  
   if (!movies || movies.length === 0) return null;
 
   // Filter for movies that are already released (past confirmed dates or explicit released status)
@@ -21,7 +23,6 @@ export default function CompactMoviesSlider() {
   // Take 12 items so we have enough to scroll through
   const displayMovies = releasedMovies.slice(0, 12);
 
-  const scrollRef = useRef(null);
   const scroll = (direction) => {
     if (scrollRef.current) {
       const scrollAmount = scrollRef.current.clientWidth * 0.8;
