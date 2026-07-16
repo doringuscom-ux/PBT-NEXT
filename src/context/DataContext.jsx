@@ -135,7 +135,36 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     fetchData();
+
+    // Cross-tab synchronization: if another tab updates the cache, sync this tab instantly
+    const handleStorage = (e) => {
+      if (e.key === 'pbt_cached_data' && e.newValue) {
+        try {
+          const parsedCache = JSON.parse(e.newValue);
+          if (parsedCache.movies) setMovies(parsedCache.movies);
+          if (parsedCache.news) setNews(parsedCache.news);
+          if (parsedCache.todayNews) setTodayNews(parsedCache.todayNews);
+          if (parsedCache.celebs) setCelebs(parsedCache.celebs);
+          if (parsedCache.videos) setVideos(parsedCache.videos);
+          if (parsedCache.announcements) setAnnouncements(parsedCache.announcements);
+        } catch (err) {}
+      }
+    };
+    
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
   }, []);
+
+  // Auto-save cache when data changes so other tabs can sync
+  useEffect(() => {
+    if (!isLoading && movies.length > 0) {
+      try {
+        localStorage.setItem('pbt_cached_data', JSON.stringify({
+          movies, news, todayNews, celebs, videos, announcements
+        }));
+      } catch (e) {}
+    }
+  }, [movies, news, todayNews, celebs, videos, announcements, isLoading]);
 
   const addMovie = async (movie) => {
     try {
