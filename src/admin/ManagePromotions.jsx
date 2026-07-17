@@ -413,7 +413,7 @@ const ManagePromotions = () => {
                             {/* Mobile Banner Column */}
                             <div>
                                 <h3 className="font-bold text-lg mb-1 text-purple-600 border-b pb-2">Mobile (Optional)</h3>
-                                <p className="text-xs text-gray-500 mb-3">Ratio 16:9 (Recommended: 800 x 450 px)</p>
+                                <p className="text-xs text-gray-500 mb-3">Ratio 3:1 (Recommended: 900 x 300 px)</p>
                                 <label className="block text-sm font-bold mb-1">Upload File</label>
                                 <input
                                     type="file"
@@ -467,7 +467,7 @@ const ManagePromotions = () => {
                         isOpen={!!imageSrc}
                         onClose={() => setImageSrc(null)}
                         imageSrc={imageSrc}
-                        aspect={cropType === 'desktop' ? (4 / 1) : cropType === 'tablet' ? (21 / 9) : (16 / 9)}
+                        aspect={cropType === 'desktop' ? (4 / 1) : cropType === 'tablet' ? (21 / 9) : (3 / 1)}
                         onCropComplete={handleCropComplete}
                     />
                 )}

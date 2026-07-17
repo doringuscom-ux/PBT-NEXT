@@ -97,7 +97,7 @@ const PromotionCarousel = () => {
         ? [promotions[promotions.length - 1], ...promotions, promotions[0]]
         : promotions;
 
-    const aspectClasses = "aspect-[16/9] md:aspect-[21/9] lg:aspect-[4/1]";
+    const aspectClasses = "aspect-[3/1] lg:aspect-[4/1]";
 
     if (isLoading) {
         return (
