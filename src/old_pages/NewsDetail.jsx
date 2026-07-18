@@ -9,11 +9,12 @@ import { useData } from '../context/DataContext';
 import CommentSection from '../components/CommentSection';
 import ImageModal from '../components/ImageModal';
 import AutoLinker from '@/components/AutoLinker';
+import Loading from '@/components/Loading';
 
 const NewsDetail = () => {
     const params = useParams();
     const rawId = params?.id || params?.param || params?.['*']; const id = Array.isArray(rawId) ? rawId.join('/') : rawId;
-    const { news, addComment, likeComment, reportComment, updateComment, deleteComment } = useData();
+    const { news, addComment, likeComment, reportComment, updateComment, deleteComment, isLoading, loadingProgress } = useData();
     const article = news.find(n => n._id === id || n.slug === id);
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
     useEffect(() => {
@@ -41,6 +42,7 @@ const NewsDetail = () => {
 
     const relatedNews = getRelatedContent();
 
+    if (isLoading) return <Loading fullScreen={false} progress={loadingProgress} />;
     if (!article) return <div className="p-10 text-center font-bold">Article not found</div>;
 
     const handleCommentSubmit = async (e) => {

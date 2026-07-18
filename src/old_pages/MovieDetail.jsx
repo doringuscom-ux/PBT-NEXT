@@ -6,11 +6,12 @@ import React, { useEffect } from 'react';
 ;
 import { useData } from '../context/DataContext';
 import MovieDetailLayout from './MovieDetailLayout';
+import Loading from '@/components/Loading';
 
 const MovieDetail = () => {
     const params = useParams();
     const rawId = params?.id || params?.param || params?.['*']; const id = Array.isArray(rawId) ? rawId.join('/') : rawId;
-    const { movies, news, addMovieComment, likeMovieComment, updateMovieComment, deleteMovieComment } = useData();
+    const { movies, news, addMovieComment, likeMovieComment, updateMovieComment, deleteMovieComment, isLoading, loadingProgress } = useData();
     
     // Find movie by ID or Slug
     const movie = movies.find(item => item._id === id || item.slug === id);
@@ -20,6 +21,8 @@ const MovieDetail = () => {
     }, [id]);
 
     const sidebarNews = [...news].sort(() => 0.5 - Math.random()).slice(0, 6);
+
+    if (isLoading) return <Loading fullScreen={false} progress={loadingProgress} />;
 
     if (!movie) return (
         <div className="min-h-[60vh] flex flex-col items-center justify-center p-10 bg-gray-50">

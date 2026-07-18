@@ -586,7 +586,8 @@ export const DataProvider = ({ children }) => {
         refreshData: fetchData,
         addMovieComment, deleteMovieComment, likeMovieComment, updateMovieComment, rateMovie, deleteMovieRating,
         addVideoComment, deleteVideoComment, likeVideoComment, updateVideoComment,
-        addCelebComment, deleteCelebComment, likeCelebComment, updateCelebComment, followCeleb, autoGenerateCelebSEO
+        addCelebComment, deleteCelebComment, likeCelebComment, updateCelebComment, followCeleb, autoGenerateCelebSEO,
+        isLoading, loadingProgress
       }}>
       {isLoading && (
         <div 

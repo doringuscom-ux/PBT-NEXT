@@ -9,12 +9,13 @@ import CommentSection from '../components/CommentSection';
 import ImageModal from '../components/ImageModal';
 import AutoLinker from '@/components/AutoLinker';
 import UserAuthModal from '../components/UserAuthModal';
+import Loading from '@/components/Loading';
 
 const CelebDetail = () => {
     const params = useParams();
     const rawId = params?.id || params?.param || params?.['*'];
     const id = Array.isArray(rawId) ? rawId.join('/') : rawId;
-    const { celebs, news, movies, addCelebComment, likeCelebComment, updateCelebComment, deleteCelebComment, followCeleb, user } = useData();
+    const { celebs, news, movies, addCelebComment, likeCelebComment, updateCelebComment, deleteCelebComment, followCeleb, user, isLoading, loadingProgress } = useData();
     const [activeSection, setActiveSection] = useState('All');
     const [isBioExpanded, setIsBioExpanded] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -67,8 +68,7 @@ const CelebDetail = () => {
         }
     }, [celeb]);
 
-    const { isLoading } = useData();
-    if (isLoading) return <div className="min-h-screen bg-black flex items-center justify-center font-black uppercase tracking-widest text-slate-400 italic">Loading Profile...</div>;
+    if (isLoading) return <Loading fullScreen={false} progress={loadingProgress} />;
 
     if (!celeb) return <div className="p-10 text-center font-bold">Celebrity not found</div>;
 
