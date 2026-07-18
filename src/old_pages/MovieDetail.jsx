@@ -6,7 +6,6 @@ import React, { useEffect } from 'react';
 ;
 import { useData } from '../context/DataContext';
 import MovieDetailLayout from './MovieDetailLayout';
-import Loading from '@/components/Loading';
 
 const MovieDetail = () => {
     const params = useParams();
@@ -20,9 +19,15 @@ const MovieDetail = () => {
         window.scrollTo(0, 0);
     }, [id]);
 
-    const sidebarNews = [...news].sort(() => 0.5 - Math.random()).slice(0, 6);
+    const sidebarNews = React.useMemo(() => {
+        return [...news].sort(() => 0.5 - Math.random()).slice(0, 6);
+    }, [news]);
 
-    if (isLoading) return <Loading fullScreen={false} progress={loadingProgress} />;
+    if (isLoading) return (
+        <div className="min-h-screen flex justify-center items-center bg-gray-50">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary-red"></div>
+        </div>
+    );
 
     if (!movie) return (
         <div className="min-h-[60vh] flex flex-col items-center justify-center p-10 bg-gray-50">

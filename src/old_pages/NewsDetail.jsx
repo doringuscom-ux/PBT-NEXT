@@ -9,7 +9,6 @@ import { useData } from '../context/DataContext';
 import CommentSection from '../components/CommentSection';
 import ImageModal from '../components/ImageModal';
 import AutoLinker from '@/components/AutoLinker';
-import Loading from '@/components/Loading';
 
 const NewsDetail = () => {
     const params = useParams();
@@ -33,16 +32,18 @@ const NewsDetail = () => {
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
-    const getRelatedContent = () => {
-        if (!article) return [];
+    const relatedNews = React.useMemo(() => {
+        if (!article || !news) return [];
         const related = news.filter(n => n.category === article.category && n._id !== id);
         const others = news.filter(n => n.category !== article.category && n._id !== id);
         return [...related, ...others].sort(() => 0.5 - Math.random()).slice(0, 6);
-    };
+    }, [article, news, id]);
 
-    const relatedNews = getRelatedContent();
-
-    if (isLoading) return <Loading fullScreen={false} progress={loadingProgress} />;
+    if (isLoading) return (
+        <div className="min-h-screen flex justify-center items-center bg-white">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary-red"></div>
+        </div>
+    );
     if (!article) return <div className="p-10 text-center font-bold">Article not found</div>;
 
     const handleCommentSubmit = async (e) => {

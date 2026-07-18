@@ -9,7 +9,6 @@ import CommentSection from '../components/CommentSection';
 import ImageModal from '../components/ImageModal';
 import AutoLinker from '@/components/AutoLinker';
 import UserAuthModal from '../components/UserAuthModal';
-import Loading from '@/components/Loading';
 
 const CelebDetail = () => {
     const params = useParams();
@@ -68,7 +67,11 @@ const CelebDetail = () => {
         }
     }, [celeb]);
 
-    if (isLoading) return <Loading fullScreen={false} progress={loadingProgress} />;
+    if (isLoading) return (
+        <div className="min-h-screen flex justify-center items-center bg-slate-950">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary-red"></div>
+        </div>
+    );
 
     if (!celeb) return <div className="p-10 text-center font-bold">Celebrity not found</div>;
 
