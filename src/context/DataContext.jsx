@@ -164,6 +164,11 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     fetchData();
 
+    // Prevent backend from going to sleep while the tab is open (Ping every 5 mins)
+    const keepAliveInterval = setInterval(() => {
+      api.getMe().catch(() => {});
+    }, 5 * 60 * 1000);
+
     // Cross-tab synchronization: if another tab updates the cache, sync this tab instantly
     const handleStorage = (e) => {
       if (e.key === 'pbt_cached_data' && e.newValue) {
@@ -180,7 +185,10 @@ export const DataProvider = ({ children }) => {
     };
     
     window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      clearInterval(keepAliveInterval);
+    };
   }, []);
 
   // Auto-save cache when data changes so other tabs can sync
