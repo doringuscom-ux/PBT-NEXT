@@ -52,7 +52,7 @@ const CommentSection = ({ itemId, comments = [], onAdd, onLike, onReport, onUpda
 
   const handleEditInit = (comment) => {
     setEditingId(comment._id);
-    setEditContent(comment.content);
+    setEditContent(comment.content || '');
   };
 
   const handleUpdate = async (commentId) => {

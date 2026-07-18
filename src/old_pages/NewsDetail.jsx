@@ -32,12 +32,14 @@ const NewsDetail = () => {
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
-    const relatedNews = React.useMemo(() => {
-        if (!article || !news) return [];
+    const [relatedNews, setRelatedNews] = useState([]);
+
+    useEffect(() => {
+        if (!article || !news || news.length === 0) return;
         const related = news.filter(n => n.category === article.category && n._id !== id);
         const others = news.filter(n => n.category !== article.category && n._id !== id);
-        return [...related, ...others].sort(() => 0.5 - Math.random()).slice(0, 6);
-    }, [article, news, id]);
+        setRelatedNews([...related, ...others].sort(() => 0.5 - Math.random()).slice(0, 6));
+    }, [id, news.length]);
 
     if (isLoading) return (
         <div className="min-h-screen flex justify-center items-center bg-white">

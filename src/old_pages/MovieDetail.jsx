@@ -2,7 +2,7 @@
 import { useParams } from 'next/navigation';
 
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 ;
 import { useData } from '../context/DataContext';
 import MovieDetailLayout from './MovieDetailLayout';
@@ -19,9 +19,12 @@ const MovieDetail = () => {
         window.scrollTo(0, 0);
     }, [id]);
 
-    const sidebarNews = React.useMemo(() => {
-        return [...news].sort(() => 0.5 - Math.random()).slice(0, 6);
-    }, [news]);
+    const [sidebarNews, setSidebarNews] = useState([]);
+    
+    useEffect(() => {
+        if (!news || news.length === 0) return;
+        setSidebarNews([...news].sort(() => 0.5 - Math.random()).slice(0, 6));
+    }, [news.length]);
 
     if (isLoading) return (
         <div className="min-h-screen flex justify-center items-center bg-gray-50">
