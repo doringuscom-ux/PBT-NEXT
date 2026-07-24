@@ -44,6 +44,23 @@ const VideoDetail = () => {
 
     return (
         <div className="bg-white min-h-screen">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "VideoObject",
+                        "name": video.title,
+                        "description": video.description?.replace(/<[^>]*>?/gm, '') || `Watch ${video.title} on Pbtadka.`,
+                        "thumbnailUrl": [
+                            video.image?.startsWith('http') ? video.image : `${baseUrl}${video.image}`
+                        ],
+                        "uploadDate": video.createdAt || new Date().toISOString(),
+                        "contentUrl": video.videoUrl?.startsWith('http') ? video.videoUrl : `${baseUrl}${video.videoUrl}`,
+                        "embedUrl": isYoutube ? getYoutubeEmbedUrl(video.videoUrl) : ""
+                    })
+                }}
+            />
             <main className="page-container py-8 mt-4">
                 <div className="flex flex-col lg:flex-row gap-8">
                     
