@@ -23,7 +23,7 @@ export default function HomeClient() {
       <PromotionCarousel />
 
 
-      <main className="page-container pb-2 lg:pb-4 pt-0">
+      <main className="page-container pb-0 pt-0">
         <h1 className="sr-only">Pbtadka - Latest News, Movies, & Celebrity Updates</h1>
 
         <div className="space-y-8 lg:space-y-12">
