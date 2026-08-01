@@ -57,7 +57,7 @@ export default function HomeClient() {
             <CompactCelebSlider />
             <NewsGrid />
             <CompactSongsSlider />
-            <CelebGrid />
+            {/* <CelebGrid /> */}
           </div>
 
 
