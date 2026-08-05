@@ -28,7 +28,7 @@ const ContactUs = () => {
 
             {/* Contact Details Grid */}
             <main className="page-container -mt-10 relative z-30 pb-20">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div className="flex flex-col gap-6 max-w-xl mx-auto">
                     
                     {/* Email Card */}
                     <div className="bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center transform hover:-translate-y-2 transition-transform duration-300">
@@ -40,25 +40,7 @@ const ContactUs = () => {
                         <a href="mailto:contact@pbtadka.com" className="text-lg font-bold text-primary-red hover:underline decoration-2 underline-offset-4 line-clamp-1">pbtadka.com@gmail.com</a>
                     </div>
                     
-                    {/* Phone Card */}
-                    <div className="bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center transform hover:-translate-y-2 transition-transform duration-300">
-                        <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-6 shadow-inner border border-blue-100">
-                            <i className="fas fa-mobile-alt text-4xl text-blue-500"></i>
-                        </div>
-                        <h2 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter mb-2">Phone Number</h2>
-                        <p className="text-slate-500 text-sm font-medium mb-6">Call us for direct assistance.</p>
-                        <a href="tel:+919876543210" className="text-lg font-bold text-blue-600 hover:underline decoration-2 underline-offset-4">+91 9041266297</a>
-                    </div>
 
-                    {/* WhatsApp Card */}
-                    <div className="bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center transform hover:-translate-y-2 transition-transform duration-300">
-                        <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6 shadow-inner border border-green-100">
-                            <i className="fab fa-whatsapp text-4xl text-green-500"></i>
-                        </div>
-                        <h2 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter mb-2">WhatsApp</h2>
-                        <p className="text-slate-500 text-sm font-medium mb-6">Message us on WhatsApp.</p>
-                        <a href="https://wa.me/9041266297" target="_blank" rel="noopener noreferrer" className="text-lg font-bold text-green-600 hover:underline decoration-2 underline-offset-4">+91 9041266297</a>
-                    </div>
 
                 </div>
             </main>
