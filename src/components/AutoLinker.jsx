@@ -6,7 +6,7 @@ const AutoLinker = ({ html, className = '' }) => {
 
   return (
     <div
-      className={`rich-text-content ${className}`}
+      className={`rich-text-content [&_a]:text-blue-600 [&_a]:hover:text-blue-800 [&_a]:underline [&_a]:font-bold [&_a]:transition-colors ${className}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
